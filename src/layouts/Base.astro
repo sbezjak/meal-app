@@ -37,6 +37,13 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/"
     .tab{font-family:'Karla';font-weight:700;font-size:.78rem;border:none;background:transparent;color:var(--muted);padding:8px 13px;border-radius:24px;cursor:pointer;transition:.15s;white-space:nowrap}
     .tab:hover{color:var(--ink)}
     .tab.active{color:#fff;background:var(--accent)}
+    /* phones: stack brand over a full-width tab bar so no tab is pushed off-screen */
+    @media (max-width:520px){
+      .topbar .inner{flex-wrap:wrap;gap:8px;padding:8px 14px;min-height:0}
+      .brand{font-size:1.15rem}
+      nav{width:100%;justify-content:space-between}
+      .tab{flex:1;text-align:center;padding:9px 4px}
+    }
 
     .wrap{max-width:880px;margin:0 auto;padding:22px 18px 70px}
     .view{display:none;animation:fade .25s ease both}
