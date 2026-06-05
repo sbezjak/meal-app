@@ -11,11 +11,11 @@ Personal meal-prep app for Sara. Astro + `@vite-pwa/astro`, static output, insta
 **No garlic in any form — not even garlic powder. No fresh onion; onion only as powder, sparingly.** Avoid all other alliums (spring onion, leek, shallot, chives). Build aromatics with ginger, smoked/sweet paprika, cumin, herbs, and a little onion powder.
 
 ## Structure
-- `src/data/recipes.json` — recipes: `{ id, title, category, portions, store, ingredients:[{item,qty,aisle}], steps:[], macros?, tip? }`
-- `src/data/weeks.json` — rotation: `[{ name, subtitle, meals:[{role, recipeId, note?}] }]`
+- `src/data/recipes.json` — recipes: `{ id, title, category, portions, ingredients:[{item,qty,aisle}], steps:[], tip? }` (`portions` is a free-text string)
+- `src/data/weeks.json` — rotation: `[{ name, subtitle, breakfast:[recipeId], days:[{d, id, tag}], prepDay:[string], duringWeek:[{d, t}] }]`. `days[].id` is a `recipeId`; `tag` ∈ `cook | fridge | freezer | takeout`. `prepDay` = one-session prep steps; `duringWeek` = quick fresh cooks (`d` = day, `t` = text).
 - `src/data/categories.json` — category label + colour
 - `src/layouts/Base.astro` — styling (Fraunces + Karla), head, SW registration
-- `src/pages/index.astro` — single page, tab nav (This Week / Recipes / Shopping / Prep), client logic via `define:vars`
+- `src/pages/index.astro` — single page, tab nav (This Week / Recipes / Shopping; the prep plan renders inside This Week), client logic via `define:vars`
 - `public/manifest.webmanifest`, `public/icon.svg` — PWA assets
 
 ## How it works
