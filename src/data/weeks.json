@@ -14,8 +14,8 @@
     ],
     "prepDay": [
       "Starting week — assume the freezer's empty. This is your biggest cook, and it stocks the freezer for the weeks ahead.",
-      "Big batch of vegan chilli: eat one Friday, freeze the rest for the coming weeks.",
-      "Double batch of mushroom sauce + pasta (Saturday); freeze a portion.",
+      "Big batch of vegan chilli: eat one portion, freeze the rest for the coming weeks.",
+      "Double batch of mushroom sauce + pasta; freeze a portion.",
       "Fill 2–3 overnight-oats jars (make more fresh midweek); bake a batch of banana & oat muffins for the freezer."
     ],
     "duringWeek": [
@@ -37,7 +37,7 @@
       { "d": "Sun", "id": "chknsalad", "tag": "takeout" }
     ],
     "prepDay": [
-      "Two quick fresh cooks this week. Make a double batch of turkey bolognese — eat one Friday, freeze one for Week D.",
+      "Two quick fresh cooks this week. Make a double batch of turkey bolognese — eat one portion, freeze one for Week D.",
       "Chilli comes from Week A's freezer batch (re-batch only if it's running low).",
       "Fill 2–3 overnight-oats jars (make more fresh midweek); bake banana & oat muffins (≈20 min) for grab-and-go."
     ],
@@ -60,7 +60,7 @@
       { "d": "Sun", "id": "burger", "tag": "takeout" }
     ],
     "prepDay": [
-      "Make the gnocchi cream gratin: eat Friday, freeze any spare.",
+      "Make the gnocchi cream gratin: eat a portion, freeze any spare.",
       "Two quick wok cooks during the week; pull chilli from the freezer.",
       "Fill 2–3 overnight-oats jars (make more fresh midweek); grab baked-pancake squares from the freezer on the other mornings. Re-batch chilli only if low."
     ],
@@ -83,7 +83,7 @@
       { "d": "Sun", "id": "", "tag": "takeout" }
     ],
     "prepDay": [
-      "Bake week: oven on. Make the cannelloni — marinara, ricotta-spinach filling, stuff, bake. Eat Wednesday, freeze the spare.",
+      "Bake week: oven on. Make the cannelloni — marinara, ricotta-spinach filling, stuff, bake. Eat a portion, freeze the spare.",
       "Baked oven pancake (≈25 min); cut into portions and freeze. Fill 2–3 overnight-oats jars.",
       "The rest is freezer variety — pull gnocchi gratin (from Week C), bolognese (from Week A) and chilli. Re-batch chilli only if low."
     ],
