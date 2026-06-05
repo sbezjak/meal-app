@@ -162,7 +162,7 @@ import categories from '../data/categories.json';
         `<li><span class="pday">${x.d}</span>${x.t}</li>`).join('');
       document.getElementById('prepBox').innerHTML =
         `<h3>Prep plan — ${w.name}</h3>`
-        + `<div class="lead">Do the prep-day session in one go; it fills the freezer. The quick cooks happen on their day during the week — each covers 2 days.</div>`
+        + `<div class="lead">Do the prep-day session in one go; it fills the freezer. The quick cooks happen across the week, whenever suits — each covers about 2 days.</div>`
         + `<div class="prepsec"><div class="prephd">🍲 Prep day — one session</div>`
         + `<ol>${(w.prepDay||[]).map(s=>`<li>${s}</li>`).join('')}</ol></div>`
         + (duringWeek ? `<div class="prepsec"><div class="prephd">🍳 During the week — quick fresh cooks</div>`

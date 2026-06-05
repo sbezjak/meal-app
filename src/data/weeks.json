@@ -19,8 +19,8 @@
       "Fill 2–3 overnight-oats jars (make more fresh midweek); bake a batch of banana & oat muffins for the freezer."
     ],
     "duringWeek": [
-      { "d": "Mon", "t": "Fresh tortillas: brown the chicken, make the yoghurt sauce, chop the veg → assemble fresh. Covers Mon + Tue (≈20 min)." },
-      { "d": "Wed", "t": "Roll chicken + noodles, chop the veg; roll fresh. One batch covers a full day (lunch + dinner) and the next day (≈15 min)." }
+      { "d": "1st cook", "t": "Fresh tortillas: brown the chicken, make the yoghurt sauce, chop the veg → assemble fresh. Covers 2 days (≈20 min)." },
+      { "d": "2nd cook", "t": "Roll chicken + noodles, chop the veg; roll fresh. One batch covers a full day (lunch + dinner) and the next day (≈15 min)." }
     ]
   },
   {
@@ -42,8 +42,8 @@
       "Fill 2–3 overnight-oats jars (make more fresh midweek); bake banana & oat muffins (≈20 min) for grab-and-go."
     ],
     "duringWeek": [
-      { "d": "Mon", "t": "Bake the chicken tortillas (beans, chickpeas, cheese, salsa): covers Mon + Tue, freeze a spare (≈25 min)." },
-      { "d": "Wed", "t": "Cook the bro meal: covers Wed + Thu (≈20 min)." }
+      { "d": "1st cook", "t": "Bake the chicken tortillas (beans, chickpeas, cheese, salsa): covers 2 days, freeze a spare (≈25 min)." },
+      { "d": "2nd cook", "t": "Cook the bro meal: covers 2 days (≈20 min)." }
     ]
   },
   {
@@ -65,8 +65,8 @@
       "Fill 2–3 overnight-oats jars (make more fresh midweek); grab baked-pancake squares from the freezer on the other mornings. Re-batch chilli only if low."
     ],
     "duringWeek": [
-      { "d": "Mon", "t": "Bro meal: covers Mon + Tue (≈20 min)." },
-      { "d": "Wed", "t": "Fried rice (use cold, day-old rice): covers Wed + Thu (≈20 min)." }
+      { "d": "1st cook", "t": "Bro meal: covers 2 days (≈20 min)." },
+      { "d": "2nd cook", "t": "Fried rice (use cold, day-old rice): covers 2 days (≈20 min)." }
     ]
   },
   {
@@ -88,7 +88,7 @@
       "The rest is freezer variety — pull gnocchi gratin (from Week C), bolognese (from Week A) and chilli. Re-batch chilli only if low."
     ],
     "duringWeek": [
-      { "d": "Mon", "t": "Chicken in mushroom sauce (cooking cream + mozzarella + parmesan): covers Mon + Tue (≈25 min)." }
+      { "d": "1st cook", "t": "Chicken in mushroom sauce (cooking cream + mozzarella + parmesan): covers 2 days (≈25 min)." }
     ]
   }
 ]
