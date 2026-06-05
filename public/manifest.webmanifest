@@ -1,0 +1,14 @@
+{
+  "name": "The Kitchen — Sara's Meal Prep",
+  "short_name": "The Kitchen",
+  "description": "Cook once, eat all week. Sara's meal-prep recipes, weekly plan and shopping list.",
+  "theme_color": "#2f4734",
+  "background_color": "#f4ede0",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": ".",
+  "start_url": ".",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

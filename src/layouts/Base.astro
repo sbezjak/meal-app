@@ -1,0 +1,207 @@
+---
+const { title = "The Kitchen" } = Astro.props;
+// Normalize so it always ends in "/" (Astro's BASE_URL can be "/meal-app" or "/").
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/" or "/"
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2f7a57" />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href={`${base}icon.svg`} />
+  <link rel="apple-touch-icon" href={`${base}icon.svg`} />
+  <link rel="manifest" href={`${base}manifest.webmanifest`} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style is:global>
+    :root{
+      --bg:#f5f3ef; --card:#ffffff; --ink:#23211d; --muted:#75706a;
+      --accent:#2f7a57; --accent-d:#235c41; --accent-soft:#e7f1ec; --line:#ebe6dd;
+      --chicken:#d4572d; --veg:#5f8a3c; --vegan:#18a08a;
+      --breakfast:#dca22f; --snack:#9b7b43; --basic:#8a7a62; --takeout:#b25f9a;
+      --sh:0 1px 2px rgba(35,33,29,.04), 0 10px 28px -20px rgba(35,33,29,.45);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:100%}
+    body{font-family:'Karla',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+    /* top nav */
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(245,243,239,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    .topbar .inner{max-width:880px;margin:0 auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:60px}
+    .brand{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;color:var(--accent-d);white-space:nowrap;display:flex;align-items:center;gap:8px}
+    .brand .bdot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+    nav{display:flex;gap:3px;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:3px}
+    .tab{font-family:'Karla';font-weight:700;font-size:.78rem;border:none;background:transparent;color:var(--muted);padding:8px 13px;border-radius:24px;cursor:pointer;transition:.15s;white-space:nowrap}
+    .tab:hover{color:var(--ink)}
+    .tab.active{color:#fff;background:var(--accent)}
+
+    .wrap{max-width:880px;margin:0 auto;padding:22px 18px 70px}
+    .view{display:none;animation:fade .25s ease both}
+    .view.active{display:block}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    /* week selector */
+    .weekbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--accent);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:20px;box-shadow:var(--sh)}
+    .weekbar .label{font-family:'Fraunces',serif;font-weight:600;font-size:1.35rem;text-align:center;flex:1}
+    .weekbar .label span{display:block;font-family:'Karla';font-weight:500;font-size:.72rem;letter-spacing:.04em;opacity:.85;margin-top:1px}
+    .wbtn{background:rgba(255,255,255,.18);border:none;color:#fff;width:40px;height:40px;border-radius:11px;font-size:1.25rem;cursor:pointer;flex:0 0 auto;transition:.15s}
+    .wbtn:hover{background:rgba(255,255,255,.32)}
+
+    .sub-h{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;color:var(--ink);margin:22px 0 10px}
+
+    /* meal + recipe cards */
+    .meal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:11px;box-shadow:var(--sh);border-left:5px solid var(--cat,var(--accent))}
+    .meal .role{font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+    .meal h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;margin:2px 0 4px;cursor:pointer;line-height:1.2}
+    .meal h3 .arr{font-size:.72rem;color:var(--muted);font-family:'Karla'}
+    .meal .meta{font-size:.85rem;color:var(--muted)}
+    .badges{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+    .badge{font-size:.64rem;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:20px;text-transform:uppercase}
+    .badge.cat{color:#fff}
+    .badge.freeze{background:#e6eef2;color:#3a5965}
+    .badge.fresh{background:#eaf3e2;color:#4f6730}
+    .meal-detail{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--line)}
+    .meal.open .meal-detail{display:block}
+
+    .prepbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:8px;box-shadow:var(--sh)}
+    .prepbox h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;margin-bottom:4px;color:var(--accent-d)}
+    .prepbox .lead{font-size:.84rem;color:var(--muted);margin-bottom:14px}
+    .prepsec{margin-top:14px}
+    .prepsec:first-of-type{margin-top:0}
+    .prepsec .prephd{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:6px}
+    .prepbox ol{list-style:none;counter-reset:s;margin:0}
+    .prepbox ol li{counter-increment:s;position:relative;padding:9px 0 9px 34px;border-bottom:1px dashed var(--line);font-size:.92rem}
+    .prepbox ol li:last-child{border-bottom:none}
+    .prepbox ol li::before{content:counter(s);position:absolute;left:0;top:9px;width:23px;height:23px;border-radius:50%;background:var(--accent-soft);color:var(--accent-d);font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center}
+    .prepbox ul.duringweek{list-style:none;margin:0}
+    .prepbox ul.duringweek li{position:relative;padding:9px 0 9px 52px;border-bottom:1px dashed var(--line);font-size:.92rem}
+    .prepbox ul.duringweek li:last-child{border-bottom:none}
+    .prepbox ul.duringweek .pday{position:absolute;left:0;top:8px;font-family:'Fraunces',serif;font-weight:700;font-size:.72rem;color:#fff;background:var(--accent);padding:2px 8px;border-radius:20px}
+
+    .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+    .filters button{font-family:'Karla';font-weight:700;font-size:.74rem;border:1px solid var(--line);background:var(--card);color:var(--muted);padding:6px 12px;border-radius:22px;cursor:pointer;transition:.12s}
+    .filters button:hover{border-color:var(--muted)}
+    .recipe-card{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:9px;overflow:hidden;box-shadow:var(--sh)}
+    .recipe-card .head{padding:13px 15px;cursor:pointer;display:flex;align-items:center;gap:11px}
+    .recipe-card .head:hover{background:#faf8f4}
+    .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+    .recipe-card .title{font-family:'Fraunces',serif;font-weight:600;font-size:1.06rem;flex:1;line-height:1.18}
+    .recipe-card .pt{font-size:.68rem;color:var(--muted);white-space:nowrap}
+    .recipe-card .chev{transition:.2s;color:var(--muted)}
+    .recipe-card.open .chev{transform:rotate(90deg)}
+    .recipe-card .body{display:none;padding:0 15px 15px}
+    .recipe-card.open .body{display:block}
+    .sectionhead{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--muted);margin:20px 0 9px}
+
+    .rdetail h4{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:13px 0 5px}
+    .rdetail h5{font-family:'Fraunces',serif;font-weight:600;font-size:.92rem;color:var(--accent-d);margin:10px 0 2px}
+    .rdetail ul{list-style:none;font-size:.9rem}
+    .rdetail ul li{padding:3px 0 3px 16px;position:relative;color:var(--ink)}
+    .rdetail ul li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+    .rdetail ul li .q{color:var(--muted)}
+    .rdetail ol{margin-left:18px;font-size:.9rem;color:var(--ink)}
+    .rdetail ol li{padding:3px 0}
+    .saucebox{background:#faf8f4;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:11px}
+    .saucebox .sx{font-family:'Fraunces',serif;font-weight:600;font-size:.95rem;color:var(--accent-d);margin-bottom:3px}
+    /* shopping */
+    .shophead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+    .shophead h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem}
+    .copybtn{font-family:'Karla';font-weight:700;font-size:.74rem;background:var(--accent);color:#fff;border:none;padding:9px 14px;border-radius:9px;cursor:pointer}
+    .copybtn:hover{background:var(--accent-d)}
+    .copybtn.ok{background:#8a9b91}
+    .scopebar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+    .scopebar button{font-family:'Karla';font-weight:700;font-size:.74rem;border:1px solid var(--line);background:var(--card);color:var(--muted);padding:7px 13px;border-radius:22px;cursor:pointer;transition:.12s}
+    .scopebar button:hover{border-color:var(--muted)}
+    .scopebar button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .shopsub{font-size:.84rem;color:var(--muted);margin-bottom:14px}
+    .wk-tag{font-size:.58rem;text-transform:uppercase;letter-spacing:.03em;color:var(--takeout);font-weight:700;margin-left:7px;border:1px solid var(--takeout);padding:1px 6px;border-radius:20px}
+    .addrow{display:flex;gap:8px;margin-bottom:12px}
+    .addrow input{flex:1;font-family:'Karla';font-size:.9rem;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}
+    .addrow input:focus{outline:none;border-color:var(--accent)}
+    .addrow button{font-family:'Karla';font-weight:700;font-size:.8rem;background:var(--accent);color:#fff;border:none;padding:0 16px;border-radius:9px;cursor:pointer}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .toolbtn{font-family:'Karla';font-weight:700;font-size:.72rem;background:transparent;border:1px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:20px;cursor:pointer}
+    .toolbtn:hover{border-color:var(--accent);color:var(--accent)}
+    .shopgroup{margin-bottom:14px}
+    .shopgroup .gh{font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;color:var(--accent-d);margin-bottom:6px}
+    .shopitem{display:flex;align-items:center;gap:11px;padding:9px 12px;background:var(--card);border:1px solid var(--line);border-radius:9px;margin-bottom:5px;cursor:pointer;user-select:none;box-shadow:var(--sh)}
+    .shopitem:hover{border-color:var(--muted)}
+    .shopitem .box{width:20px;height:20px;border:2px solid var(--muted);border-radius:5px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:#fff;transition:.1s}
+    .shopitem.done .box{background:var(--accent);border-color:var(--accent)}
+    .shopitem.done .txt{text-decoration:line-through;color:#c3bdb2}
+    .shopitem .txt{font-size:.92rem}
+    .shopitem .amt{margin-left:auto;font-size:.82rem;color:var(--muted);white-space:nowrap}
+    .shopitem.done .amt{color:#c3bdb2}
+    .shopitem .rm{margin-left:6px;border:none;background:transparent;color:var(--chicken);font-size:1rem;cursor:pointer;flex:0 0 auto}
+    .added-tag{font-size:.58rem;text-transform:uppercase;color:var(--accent);font-weight:700;margin-left:7px}
+    .copyhidden{position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0}
+
+    /* today glance */
+    .todaybox{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:14px;padding:13px 16px;margin-bottom:13px;box-shadow:var(--sh)}
+    .todaybox .td-ico{font-size:1.35rem;flex:0 0 auto;line-height:1}
+    .todaybox .td-txt{flex:1;line-height:1.25}
+    .todaybox .td-label{display:block;font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent-d);margin-bottom:1px}
+    .todaybox b{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem}
+    .todaybox .lk{color:var(--accent-d);font-weight:700;text-decoration:underline;cursor:pointer;font-size:.8rem;white-space:nowrap}
+
+    /* breakfast banner */
+    .bfast{display:flex;align-items:center;gap:13px;background:var(--accent-soft);border:1px solid #d4e6dc;border-radius:14px;padding:13px 16px;margin-bottom:13px;box-shadow:var(--sh)}
+    .bfast .bf-ico{font-size:1.5rem;flex:0 0 auto;line-height:1}
+    .bfast .bf-txt{flex:1;font-size:.88rem;color:var(--ink);line-height:1.3}
+    .bfast .bf-label{font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--breakfast);display:block;margin-bottom:4px}
+    .bfast .bf-item{display:block;margin-top:3px}
+    .bfast .bf-item:first-child{margin-top:0}
+    .bfast b{font-weight:600;font-family:'Fraunces',serif;font-size:1rem}
+    .bfast .lk{color:var(--accent-d);font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;font-size:.8rem}
+
+    /* view-shopping link from This Week */
+    .viewshop{display:inline-flex;align-items:center;gap:7px;font-family:'Karla';font-weight:700;font-size:.82rem;color:var(--accent-d);background:var(--accent-soft);border:1px solid #d4e6dc;padding:11px 17px;border-radius:11px;cursor:pointer;margin-top:14px}
+    .viewshop:hover{background:#dceae3}
+
+    /* rearrange control */
+    .schedtools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px}
+    .rearrangebtn{font-family:'Karla';font-weight:700;font-size:.74rem;border:1px solid var(--line);background:var(--card);color:var(--muted);padding:8px 14px;border-radius:22px;cursor:pointer;transition:.12s}
+    .rearrangebtn:hover{border-color:var(--accent);color:var(--accent)}
+    .rearrangebtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .rearrangehint{font-size:.78rem;color:var(--accent-d);font-weight:600}
+
+    /* week schedule — one card per meal block */
+    .sched{display:flex;flex-direction:column;gap:9px;margin-bottom:8px}
+    .mealcard{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--cat,var(--accent));border-radius:12px;overflow:hidden;box-shadow:var(--sh);transition:transform .1s,box-shadow .1s}
+    .drow{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
+    .drow:hover{background:#faf8f4}
+    .drow .day{font-family:'Fraunces',serif;font-weight:700;font-size:.92rem;min-width:42px;flex:0 0 auto;color:var(--accent-d);white-space:nowrap}
+    .drow .dtitle{flex:1;font-weight:600;font-size:.96rem;line-height:1.2}
+    .drow .dtitle .dsub{display:block;font-weight:500;font-size:.72rem;color:var(--muted);margin-top:1px}
+    .drow .dtag{font-size:.6rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;color:#fff}
+    .drow .chev{color:var(--muted);font-size:.78rem;transition:.2s}
+    .drow .movemark{color:var(--accent);font-size:1.05rem;flex:0 0 auto}
+    .mealcard.open .chev{transform:rotate(90deg)}
+    .mealcard.freeday{border-left-style:dashed}
+    .mealcard.freeday .drow{cursor:default}
+    .mealcard.freeday .drow:hover{background:transparent}
+    .ddetail{display:none;padding:0 14px 14px}
+    .mealcard.open .ddetail{display:block}
+    /* rearrange mode — picked-up card */
+    .mealcard.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset, var(--sh);transform:scale(1.01)}
+    .tip{margin-top:12px;font-size:.85rem;color:var(--accent-d);background:var(--accent-soft);border:1px solid #d4e6dc;border-radius:9px;padding:9px 12px;line-height:1.4}
+
+    /* recipe search */
+    .search{width:100%;font-family:'Karla';font-size:.92rem;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);margin-bottom:12px}
+    .search:focus{outline:none;border-color:var(--accent)}
+  </style>
+</head>
+<body>
+  <slot />
+  <script define:vars={{ base }}>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register(base + 'sw.js', { scope: base }).catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

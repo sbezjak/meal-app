@@ -1,0 +1,465 @@
+---
+import Base from '../layouts/Base.astro';
+import recipes from '../data/recipes.json';
+import weeks from '../data/weeks.json';
+import categories from '../data/categories.json';
+---
+<Base title="The Kitchen — Sara's Meal Prep">
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand"><span class="bdot"></span>Sara's Kitchen</div>
+      <nav>
+        <button class="tab active" data-view="week">This Week</button>
+        <button class="tab" data-view="recipes">Recipes</button>
+        <button class="tab" data-view="shop">Shopping</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="view active" id="view-week">
+      <div class="weekbar">
+        <button class="wbtn" id="prevWeek" aria-label="Previous week">‹</button>
+        <div class="label" id="weekLabel"></div>
+        <button class="wbtn" id="nextWeek" aria-label="Next week">›</button>
+      </div>
+      <div class="todaybox" id="todayBox"></div>
+      <div class="bfast" id="bfast"></div>
+      <div class="schedtools">
+        <button class="rearrangebtn" id="rearrangeBtn">↕ Rearrange days</button>
+        <span class="rearrangehint" id="rearrangeHint"></span>
+      </div>
+      <div class="sched" id="sched"></div>
+      <button class="viewshop" id="viewShop">🛒 View this week's shopping list →</button>
+      <div class="prepbox" id="prepBox" style="margin-top:18px"></div>
+    </section>
+
+    <section class="view" id="view-recipes">
+      <input class="search" id="recipeSearch" type="text" placeholder="Search recipes or ingredients…" autocomplete="off" />
+      <div class="filters" id="filters"></div>
+      <div id="recipeList"></div>
+    </section>
+
+    <section class="view" id="view-shop">
+      <div class="shophead">
+        <h2 id="shopTitle"></h2>
+        <button class="copybtn" id="copyBtn">📋 Copy list</button>
+      </div>
+      <div class="scopebar" id="scopeBar">
+        <button data-scope="week">This week</button>
+        <button data-scope="all">Whole rotation</button>
+      </div>
+      <p class="shopsub" id="shopSub"></p>
+      <div class="addrow">
+        <input id="addInput" type="text" placeholder="Add your own item…" autocomplete="off" />
+        <button id="addBtn">Add</button>
+      </div>
+      <div class="toolbar">
+        <button class="toolbtn" id="uncheckBtn">Uncheck all</button>
+        <button class="toolbtn" id="clearAddedBtn">Clear added items</button>
+      </div>
+      <div id="shopContent"></div>
+      <textarea class="copyhidden" id="copyArea" readonly aria-hidden="true" tabindex="-1"></textarea>
+    </section>
+  </div>
+
+  <script is:inline define:vars={{ recipes, weeks, categories }}>
+    const R = {};
+    recipes.forEach(r => { R[r.id] = r; });
+    const CAT = categories;
+    const CAT_ORDER = Object.keys(CAT);
+    const AISLE_ORDER = ['Produce','Meat & tofu','Dairy & eggs','Frozen','Grains & carbs','Bakery','Cans & jars','Sauces & oils','Spices & dried herbs','Pantry','Other'];
+    const TAG = { cook:{t:'Cook fresh',c:'var(--accent)'}, fridge:{t:'Leftovers',c:'#6c8fb0'}, freezer:{t:'From freezer',c:'var(--vegan)'}, takeout:{t:'Takeout',c:'var(--takeout)'} };
+
+    const REFS = [
+      ['mushroom sauce','mushroom_sauce'], ['cream sauce','cream'], ['marinara','marinara'],
+      ['peanut','peanut'], ['breaded','breaded'], ['burger sauce','burgersauce'],
+      ['yoghurt','yogsauce'], ['cheese bread','dough'],
+    ];
+    const resolveRef = (item) => { const l=item.toLowerCase(); for(const [m,id] of REFS) if(l.includes(m)) return id; return null; };
+
+    const LS = {
+      get(k, fb){ try { const v = localStorage.getItem(k); return v==null ? fb : JSON.parse(v); } catch(e){ return fb; } },
+      set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
+    };
+
+    let currentWeek = LS.get('week', 0);
+    if (typeof currentWeek !== 'number' || currentWeek < 0 || currentWeek >= weeks.length) currentWeek = 0;
+
+    const isFreeDay = (d) => d.tag === 'takeout';
+    const breakfastIds = (w) => Array.isArray(w.breakfast) ? w.breakfast : [w.breakfast];
+    // Shopping derives from every day that has a real recipe (incl. a named weekend "treat" takeout) + the week's breakfasts.
+    // A pure free day (no recipe id) adds nothing.
+    const plannedRecipeIds = (w) => [...new Set([...w.days.map(d=>d.id).filter(id=>R[id]), ...breakfastIds(w)])];
+
+    const ingLine = (i) => `<li>${i.item}${i.qty && i.qty!=='—' ? ` — <span class="q">${i.qty}</span>` : ''}</li>`;
+
+    // Ingredient list — grouped into labelled sub-sections when items carry a `group` (e.g. snacks by craving).
+    function ingredientsHTML(r){
+      const normal = r.ingredients.filter(i => !i.item.startsWith('→'));
+      if(normal.some(i => i.group)){
+        const groups = [...new Set(normal.map(i => i.group))];
+        return groups.map(g =>
+          `<h5>${g}</h5><ul>` + normal.filter(i => i.group===g).map(ingLine).join('') + '</ul>'
+        ).join('');
+      }
+      return '<ul>' + normal.map(ingLine).join('') + '</ul>';
+    }
+
+    function refsOf(r){
+      const out=[]; const seen=new Set();
+      r.ingredients.forEach(i => { if(i.item.startsWith('→')){ const id=resolveRef(i.item); if(id && R[id] && !seen.has(id)){ seen.add(id); out.push({ label:i.item.replace(/^→\s*/,''), rec:R[id] }); } } });
+      return out;
+    }
+    function detailHTML(r){
+      const refs = refsOf(r);
+      let h = '<div class="rdetail"><h4>Ingredients</h4>';
+      h += ingredientsHTML(r);
+      if(refs.length) h += '<ul>' + refs.map(x => `<li>+ ${x.label} <span class="q">(recipe below)</span></li>`).join('') + '</ul>';
+      h += '<h4>Method</h4><ol>' + r.steps.map(s => `<li>${s}</li>`).join('') + '</ol>';
+      // Embedded sub-recipes (sauces etc.) — full text shown inline, so no separate "open full recipe" link.
+      refs.forEach(x => {
+        const sr = x.rec;
+        h += `<div class="saucebox"><div class="sx">${sr.title}</div>`
+          + ingredientsHTML(sr)
+          + '<ol>' + sr.steps.map(s=>`<li>${s}</li>`).join('') + '</ol></div>';
+      });
+      if(r.tip) h += `<div class="tip">💡 ${r.tip}</div>`;
+      h += '</div>';
+      return h;
+    }
+
+    // ===== THIS WEEK =====
+    // One card per day (Mon…Sun). Day names stay fixed in place; rearranging swaps which meal sits on which day.
+    // Constraint: the free day must stay on the weekend (the last two positions = Sat / Sun).
+    let rearranging = false;
+    let selectedPos = null; // day position currently picked up in rearrange mode
+    const orderKey = () => 'order:' + currentWeek;
+
+    // order[pos] = the day-entry index whose meal is shown at position pos (the fixed Mon…Sun slot).
+    function dayOrder(w){
+      const n = w.days.length;
+      const saved = LS.get(orderKey(), null);
+      if(Array.isArray(saved) && saved.length === n && [...saved].sort((a,b)=>a-b).every((v,i)=>v===i)) return saved;
+      return w.days.map((_, i) => i);
+    }
+    function weekRows(w){
+      return dayOrder(w).map((mealIdx, pos) => ({ pos, dName: w.days[pos].d, meal: w.days[mealIdx] }));
+    }
+    const isWeekendPos = (w, pos) => pos >= w.days.length - 2;
+
+    function renderWeek(){
+      const w = weeks[currentWeek];
+      document.getElementById('weekLabel').innerHTML = `${w.name}<span>${w.subtitle}</span>`;
+      const bfs = breakfastIds(w).map(id => R[id]).filter(Boolean);
+      const bfLinks = bfs.map(r => `<div class="bf-item"><b>${r.title}</b> <span class="lk" data-goto="${r.id}">recipe →</span></div>`).join('');
+      document.getElementById('bfast').innerHTML =
+        `<span class="bf-ico">🥣</span>`
+        + `<span class="bf-txt"><span class="bf-label">Breakfast — mix through the week</span>${bfLinks}</span>`;
+      renderToday(w);
+      renderSched(w);
+      const duringWeek = (w.duringWeek||[]).map(x =>
+        `<li><span class="pday">${x.d}</span>${x.t}</li>`).join('');
+      document.getElementById('prepBox').innerHTML =
+        `<h3>Prep plan — ${w.name}</h3>`
+        + `<div class="lead">Do the prep-day session in one go; it fills the freezer. The quick cooks happen on their day during the week — each covers 2 days.</div>`
+        + `<div class="prepsec"><div class="prephd">🍲 Prep day — one session</div>`
+        + `<ol>${(w.prepDay||[]).map(s=>`<li>${s}</li>`).join('')}</ol></div>`
+        + (duringWeek ? `<div class="prepsec"><div class="prephd">🍳 During the week — quick fresh cooks</div>`
+        + `<ul class="duringweek">${duringWeek}</ul></div>` : '');
+    }
+
+    // "Today" glance — the meal sitting on today's weekday in the week you're viewing.
+    function renderToday(w){
+      const idx = (new Date().getDay() + 6) % 7; // JS Sun=0…Sat=6 → Mon=0…Sun=6
+      const rows = weekRows(w);
+      const row = rows[idx] || rows[0];
+      const r = R[row.meal.id];
+      const treat = isFreeDay(row.meal) && r;     // named weekend takeout
+      const pureFree = isFreeDay(row.meal) && !r; // plain eat-out day
+      const title = pureFree ? 'Free day — eat out, family lunch or leftovers'
+                  : (treat ? `${r.title} — or eat out` : (r ? r.title : ''));
+      document.getElementById('todayBox').innerHTML =
+        `<span class="td-ico">🍽️</span>`
+        + `<span class="td-txt"><span class="td-label">Today · ${row.dName}</span><b>${title}</b></span>`
+        + (pureFree ? '' : `<span class="lk" data-jump="${row.pos}">see →</span>`);
+    }
+
+    function renderSched(w){
+      document.getElementById('sched').innerHTML = weekRows(w).map(row => {
+        const d = row.meal; const free = isFreeDay(d);
+        const sel = selectedPos === row.pos ? ' sel' : '';
+        if(free){
+          const tr = R[d.id]; // named weekend "treat" takeout, or undefined for a plain free day
+          if(tr){
+            const right = rearranging ? '<span class="movemark">⇅</span>' : '<span class="chev">▸</span>';
+            return `<div class="mealcard${sel}" style="--cat:var(--takeout)" data-pos="${row.pos}">
+              <div class="drow" data-card-row>
+                <span class="day">${row.dName}</span>
+                <span class="dtitle">${tr.title}<span class="dsub">takeout-style — or eat out</span></span>
+                <span class="dtag" style="background:var(--takeout)">Takeout</span>
+                ${right}
+              </div>
+              ${rearranging ? '' : `<div class="ddetail">${detailHTML(tr)}</div>`}
+            </div>`;
+          }
+          return `<div class="mealcard freeday${sel}" style="--cat:var(--takeout)" data-pos="${row.pos}">
+            <div class="drow" data-card-row>
+              <span class="day">${row.dName}</span>
+              <span class="dtitle">Free day<span class="dsub">eat out · family lunch · leftovers</span></span>
+              <span class="dtag" style="background:var(--takeout)">Free</span>
+              ${rearranging ? '<span class="movemark">⇅</span>' : ''}
+            </div>
+          </div>`;
+        }
+        const r = R[d.id]; if(!r) return '';
+        const right = rearranging ? '<span class="movemark">⇅</span>' : '<span class="chev">▸</span>';
+        const c = CAT[r.category]; const tag = TAG[d.tag] || TAG.cook;
+        return `<div class="mealcard${sel}" style="--cat:${c.color}" data-pos="${row.pos}">
+          <div class="drow" data-card-row>
+            <span class="day">${row.dName}</span>
+            <span class="dtitle">${r.title}</span>
+            <span class="dtag" style="background:${tag.c}">${tag.t}</span>
+            ${right}
+          </div>
+          ${rearranging ? '' : `<div class="ddetail">${detailHTML(r)}</div>`}
+        </div>`;
+      }).join('');
+    }
+
+    // Tap-to-rearrange (touch-friendly, no dragging). Tap a day to pick it up, tap another to swap.
+    const DEFAULT_HINT = 'Tap a day, then tap another to swap.';
+    function toggleRearrange(){
+      rearranging = !rearranging; selectedPos = null;
+      const btn = document.getElementById('rearrangeBtn');
+      btn.textContent = rearranging ? '✓ Done' : '↕ Rearrange days';
+      btn.classList.toggle('active', rearranging);
+      document.getElementById('rearrangeHint').textContent = rearranging ? DEFAULT_HINT : '';
+      renderSched(weeks[currentWeek]);
+    }
+    function pickDay(pos){
+      pos = +pos;
+      if(selectedPos === null || selectedPos === pos){
+        selectedPos = selectedPos === pos ? null : pos;
+        renderSched(weeks[currentWeek]); return;
+      }
+      const w = weeks[currentWeek];
+      const order = dayOrder(w).slice();
+      [order[selectedPos], order[pos]] = [order[pos], order[selectedPos]];
+      // Guard: the free day must end up on the weekend (Sat / Sun).
+      const freePos = order.findIndex(mealIdx => isFreeDay(w.days[mealIdx]));
+      if(freePos >= 0 && !isWeekendPos(w, freePos)){
+        selectedPos = null; renderSched(w);
+        document.getElementById('rearrangeHint').textContent = '⚠ Free day has to stay on Sat or Sun.';
+        return;
+      }
+      LS.set(orderKey(), order);
+      selectedPos = null; renderSched(w);
+      document.getElementById('rearrangeHint').textContent = DEFAULT_HINT;
+    }
+
+    // ===== RECIPES =====
+    let activeFilter = 'all';
+    let searchQ = '';
+    function renderFilters(){
+      const f = document.getElementById('filters');
+      let html = `<button data-f="all" style="background:var(--accent);border-color:var(--accent);color:#fff">All</button>`;
+      for(const k in CAT) html += `<button data-f="${k}">${CAT[k].label}</button>`;
+      f.innerHTML = html;
+      f.querySelectorAll('button').forEach(b => {
+        b.onclick = () => {
+          activeFilter = b.dataset.f;
+          f.querySelectorAll('button').forEach(x => { x.style.background='var(--card)'; x.style.borderColor='var(--line)'; x.style.color='var(--muted)'; });
+          const col = b.dataset.f==='all' ? 'var(--accent)' : CAT[b.dataset.f].color;
+          b.style.background=col; b.style.borderColor=col; b.style.color='#fff';
+          renderRecipes();
+        };
+      });
+    }
+    function matchesSearch(r){
+      if(!searchQ) return true;
+      const hay = (r.title + ' ' + r.ingredients.map(i=>i.item).join(' ')).toLowerCase();
+      return hay.includes(searchQ);
+    }
+    function renderRecipes(){
+      const list = document.getElementById('recipeList');
+      let entries = recipes.filter(r => (activeFilter==='all' || r.category===activeFilter) && matchesSearch(r));
+      const showHeads = activeFilter==='all' && !searchQ;
+      if(activeFilter==='all') entries = entries.slice().sort((a,b)=>CAT_ORDER.indexOf(a.category)-CAT_ORDER.indexOf(b.category));
+      if(!entries.length){ list.innerHTML = '<p style="color:var(--muted)">No recipes match.</p>'; return; }
+      let lastCat = null;
+      list.innerHTML = entries.map(r => {
+        let head='';
+        if(showHeads && r.category!==lastCat){ lastCat=r.category; head=`<div class="sectionhead">${CAT[r.category].label}</div>`; }
+        return head + `<div class="recipe-card" data-rid="${r.id}">
+          <div class="head" data-toggle="card">
+            <span class="dot" style="background:${CAT[r.category].color}"></span>
+            <span class="title">${r.title}</span>
+            <span class="pt">${r.portions}</span>
+            <span class="chev">▸</span>
+          </div>
+          <div class="body">${detailHTML(r)}</div>
+        </div>`;
+      }).join('');
+    }
+    function gotoRecipe(id){
+      activeFilter='all'; searchQ=''; document.getElementById('recipeSearch').value='';
+      renderFilters();
+      const ab = document.querySelector('#filters button[data-f="all"]');
+      if(ab){ ab.style.background='var(--accent)'; ab.style.borderColor='var(--accent)'; ab.style.color='#fff'; }
+      renderRecipes();
+      switchTab('recipes');
+      const card = document.querySelector(`.recipe-card[data-rid="${id}"]`);
+      if(card){ card.classList.add('open'); card.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }
+
+    // ===== SHOPPING =====
+    function gatherIngredients(recipeIds){
+      const map = new Map(); const visited = new Set();
+      function add(r){
+        if(!r || visited.has(r.id)) return;
+        visited.add(r.id);
+        r.ingredients.forEach(ing => {
+          if(ing.item.startsWith('→')){ const id=resolveRef(ing.item); if(id) add(R[id]); return; }
+          const key = ing.item.toLowerCase();
+          if(!map.has(key)) map.set(key, { item: ing.item, qtys: new Set(), aisle: ing.aisle || 'Other' });
+          if(ing.qty && ing.qty!=='—') map.get(key).qtys.add(ing.qty);
+        });
+      }
+      recipeIds.forEach(id => add(R[id]));
+      return [...map.values()].map(v => ({ item:v.item, qty:[...v.qtys].join(' + '), aisle:v.aisle }));
+    }
+    // Shopping scope: stock up for one week, or the whole rotation (master list).
+    let shopScope = LS.get('shopScope', 'week');
+    if(!['week','all'].includes(shopScope)) shopScope = 'week';
+    function scopeWeeks(){
+      if(shopScope==='all') return weeks.map((_,i)=>i);
+      return [currentWeek];
+    }
+    const scopeKey = () => shopScope==='all' ? 'all' : shopScope+':'+currentWeek;
+    const manualKey = () => 'shop:manual:' + currentWeek;
+    const checkKey = () => 'shop:checks:' + scopeKey();
+    const itemId = (it) => (it.aisle+'|'+it.item).toLowerCase();
+
+    function buildShop(){
+      const byId = new Map();
+      const bump = (i, wi, added) => {
+        const id = itemId(i);
+        if(!byId.has(id)) byId.set(id, { item:i.item, aisle:i.aisle, qtys:new Set(), wks:new Set(), added:false });
+        const e = byId.get(id);
+        if(i.qty) String(i.qty).split(' + ').forEach(q => { if(q) e.qtys.add(q); });
+        e.wks.add(wi);
+        if(added) e.added = true;
+      };
+      scopeWeeks().forEach(wi => {
+        gatherIngredients(plannedRecipeIds(weeks[wi])).forEach(i => bump(i, wi, false));
+        LS.get('shop:manual:'+wi, []).forEach(i => bump(i, wi, true));
+      });
+      const items = [...byId.values()].map(e => ({ item:e.item, aisle:e.aisle, qty:[...e.qtys].join(' + '), weeks:e.wks.size, added:e.added }));
+      const groups = {};
+      items.forEach(i => { (groups[i.aisle] ||= []).push(i); });
+      const order = Object.keys(groups).sort((a,b)=>{ const ai=AISLE_ORDER.indexOf(a),bi=AISLE_ORDER.indexOf(b); return (ai<0?99:ai)-(bi<0?99:bi); });
+      order.forEach(a => groups[a].sort((x,y)=>x.item.localeCompare(y.item)));
+      return { order, groups };
+    }
+    function scopeTitle(){
+      if(shopScope==='all') return 'Master list — whole rotation';
+      return `${weeks[currentWeek].name} — Shopping`;
+    }
+    function scopeSub(){
+      if(shopScope==='all') return 'Everything across all weeks, deduped and sorted by aisle — for one big stock-up trip. "×N wks" marks items several weeks need (buy more of those). Tick as you shop.';
+      return 'Auto-built from this week’s meals + breakfasts, sorted by aisle. Tick as you shop.';
+    }
+    function renderShop(){
+      document.getElementById('shopTitle').textContent = scopeTitle();
+      document.getElementById('shopSub').textContent = scopeSub();
+      document.querySelectorAll('#scopeBar button').forEach(b => b.classList.toggle('active', b.dataset.scope===shopScope));
+      const { order, groups } = buildShop();
+      const checks = LS.get(checkKey(), {});
+      let html='';
+      order.forEach(aisle => {
+        html += `<div class="shopgroup"><div class="gh">${aisle}</div>`;
+        groups[aisle].forEach(i => {
+          const id = itemId(i);
+          html += `<div class="shopitem ${checks[id]?'done':''}" data-id="${id}">
+            <span class="box">✓</span>
+            <span class="txt">${i.item}${i.added?'<span class="added-tag">added</span>':''}${i.weeks>1?`<span class="wk-tag">×${i.weeks} wks</span>`:''}</span>
+            <span class="amt">${i.qty||''}</span>
+            ${i.added?`<button class="rm" data-rm="${id}" aria-label="Remove">✕</button>`:''}</div>`;
+        });
+        html += `</div>`;
+      });
+      document.getElementById('shopContent').innerHTML = html || '<p style="color:var(--muted)">Nothing here yet.</p>';
+      document.getElementById('copyArea').value = shopText();
+    }
+    function shopText(){
+      const { order, groups } = buildShop();
+      const lines = [`${scopeTitle()} list`, ''];
+      order.forEach(aisle => {
+        lines.push(aisle.toUpperCase());
+        groups[aisle].forEach(i => lines.push(`- ${i.item}${i.qty ? ` (${i.qty})` : ''}${i.weeks>1?` ×${i.weeks} wks`:''}`));
+        lines.push('');
+      });
+      return lines.join('\n').trim();
+    }
+    function toggleCheck(id){ const c=LS.get(checkKey(),{}); if(c[id]) delete c[id]; else c[id]=true; LS.set(checkKey(),c); }
+    function addManual(items){ const m=LS.get(manualKey(),[]); const have=new Set(m.map(itemId)); items.forEach(i=>{ if(!have.has(itemId(i))){ m.push(i); have.add(itemId(i)); } }); LS.set(manualKey(),m); }
+    function removeManual(id){ scopeWeeks().forEach(wi => { const k='shop:manual:'+wi; LS.set(k, LS.get(k,[]).filter(i=>itemId(i)!==id)); }); const c=LS.get(checkKey(),{}); delete c[id]; LS.set(checkKey(),c); }
+
+    function copyText(text, btn, label){
+      const done = () => { btn.textContent='✓ Copied'; btn.classList.add('ok'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('ok'); }, 1600); };
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(()=>{ const a=document.getElementById('copyArea'); a.value=text; a.focus(); a.select(); try{document.execCommand('copy');}catch(e){} done(); }); }
+      else { const a=document.getElementById('copyArea'); a.value=text; a.focus(); a.select(); try{document.execCommand('copy');}catch(e){} done(); }
+    }
+
+    function switchTab(view){
+      document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active', x.dataset.view===view));
+      document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active', x.id==='view-'+view));
+      window.scrollTo({top:0});
+    }
+
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      const cardRow = t.closest('[data-card-row]');
+      if(cardRow){
+        const card = cardRow.closest('.mealcard');
+        if(rearranging){ pickDay(card.dataset.pos); return; }
+        if(!card.classList.contains('freeday')) card.classList.toggle('open');
+        return;
+      }
+      const cardH = t.closest('[data-toggle="card"]');
+      if(cardH){ cardH.closest('.recipe-card').classList.toggle('open'); return; }
+      const gotoEl = t.closest('[data-goto]');
+      if(gotoEl){ e.stopPropagation(); gotoRecipe(gotoEl.dataset.goto); return; }
+      const jumpEl = t.closest('[data-jump]');
+      if(jumpEl){
+        const card = document.querySelector(`.mealcard[data-pos="${jumpEl.dataset.jump}"]`);
+        if(card){ if(!rearranging && !card.classList.contains('freeday')) card.classList.add('open'); card.scrollIntoView({behavior:'smooth', block:'center'}); }
+        return;
+      }
+      const rmEl = t.closest('[data-rm]');
+      if(rmEl){ e.stopPropagation(); removeManual(rmEl.dataset.rm); renderShop(); return; }
+      const shopIt = t.closest('#shopContent .shopitem');
+      if(shopIt){ shopIt.classList.toggle('done'); toggleCheck(shopIt.dataset.id); return; }
+      const tab = t.closest('.tab');
+      if(tab){ switchTab(tab.dataset.view); return; }
+    });
+
+    document.getElementById('prevWeek').onclick = () => { selectedPos=null; currentWeek=(currentWeek+weeks.length-1)%weeks.length; LS.set('week',currentWeek); renderWeek(); renderShop(); };
+    document.getElementById('nextWeek').onclick = () => { selectedPos=null; currentWeek=(currentWeek+1)%weeks.length; LS.set('week',currentWeek); renderWeek(); renderShop(); };
+    document.getElementById('addBtn').onclick = () => { const inp=document.getElementById('addInput'); const v=inp.value.trim(); if(!v) return; addManual([{item:v,qty:'',aisle:'Other'}]); inp.value=''; renderShop(); };
+    document.getElementById('addInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('addBtn').click(); });
+    document.getElementById('uncheckBtn').onclick = () => { LS.set(checkKey(), {}); renderShop(); };
+    document.getElementById('clearAddedBtn').onclick = () => { LS.set(manualKey(), []); renderShop(); };
+    document.getElementById('recipeSearch').addEventListener('input', (e) => { searchQ = e.target.value.trim().toLowerCase(); renderRecipes(); });
+    document.getElementById('copyBtn').onclick = () => copyText(shopText(), document.getElementById('copyBtn'), '📋 Copy list');
+    document.getElementById('viewShop').onclick = () => switchTab('shop');
+    document.getElementById('rearrangeBtn').onclick = toggleRearrange;
+    document.querySelectorAll('#scopeBar button').forEach(b => { b.onclick = () => { shopScope = b.dataset.scope; LS.set('shopScope', shopScope); renderShop(); }; });
+
+    renderWeek();
+    renderFilters();
+    renderRecipes();
+    renderShop();
+  </script>
+</Base>

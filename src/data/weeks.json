@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Week A",
+    "subtitle": "Starting week · big stock-up cook",
+    "breakfast": ["oats_base", "banana_egg_muffins"],
+    "days": [
+      { "d": "Mon", "id": "tortillas_fresh", "tag": "cook" },
+      { "d": "Tue", "id": "tortillas_fresh", "tag": "fridge" },
+      { "d": "Wed", "id": "vietrolls", "tag": "cook" },
+      { "d": "Thu", "id": "vietrolls", "tag": "fridge" },
+      { "d": "Fri", "id": "veganchilli", "tag": "freezer" },
+      { "d": "Sat", "id": "mushroom_veg", "tag": "freezer" },
+      { "d": "Sun", "id": "chowmein", "tag": "takeout" }
+    ],
+    "prepDay": [
+      "Starting week — assume the freezer's empty. This is your biggest cook, and it stocks the freezer for the weeks ahead.",
+      "Big batch of vegan chilli: eat one Friday, freeze the rest for the coming weeks.",
+      "Double batch of mushroom sauce + pasta (Saturday); freeze a portion.",
+      "Fill 2–3 overnight-oats jars (make more fresh midweek); bake a batch of banana & oat muffins for the freezer."
+    ],
+    "duringWeek": [
+      { "d": "Mon", "t": "Fresh tortillas: brown the chicken, make the yoghurt sauce, chop the veg → assemble fresh. Covers Mon + Tue (≈20 min)." },
+      { "d": "Wed", "t": "Roll chicken + noodles, chop the veg; roll fresh. One batch covers a full day (lunch + dinner) and the next day (≈15 min)." }
+    ]
+  },
+  {
+    "name": "Week B",
+    "subtitle": "Comfort · lean on the freezer",
+    "breakfast": ["banana_egg_muffins", "oats_base"],
+    "days": [
+      { "d": "Mon", "id": "tortillas_baked", "tag": "cook" },
+      { "d": "Tue", "id": "tortillas_baked", "tag": "fridge" },
+      { "d": "Wed", "id": "bro", "tag": "cook" },
+      { "d": "Thu", "id": "bro", "tag": "fridge" },
+      { "d": "Fri", "id": "bolognese", "tag": "freezer" },
+      { "d": "Sat", "id": "veganchilli", "tag": "freezer" },
+      { "d": "Sun", "id": "chknsalad", "tag": "takeout" }
+    ],
+    "prepDay": [
+      "Two quick fresh cooks this week. Make a double batch of turkey bolognese — eat one Friday, freeze one for Week D.",
+      "Chilli comes from Week A's freezer batch (re-batch only if it's running low).",
+      "Fill 2–3 overnight-oats jars (make more fresh midweek); bake banana & oat muffins (≈20 min) for grab-and-go."
+    ],
+    "duringWeek": [
+      { "d": "Mon", "t": "Bake the chicken tortillas (beans, chickpeas, cheese, salsa): covers Mon + Tue, freeze a spare (≈25 min)." },
+      { "d": "Wed", "t": "Cook the bro meal: covers Wed + Thu (≈20 min)." }
+    ]
+  },
+  {
+    "name": "Week C",
+    "subtitle": "Wok week · gnocchi gratin",
+    "breakfast": ["oats_base", "bakedpancake"],
+    "days": [
+      { "d": "Mon", "id": "bro", "tag": "cook" },
+      { "d": "Tue", "id": "bro", "tag": "fridge" },
+      { "d": "Wed", "id": "friedrice", "tag": "cook" },
+      { "d": "Thu", "id": "friedrice", "tag": "fridge" },
+      { "d": "Fri", "id": "gnocchicream", "tag": "freezer" },
+      { "d": "Sat", "id": "veganchilli", "tag": "freezer" },
+      { "d": "Sun", "id": "burger", "tag": "takeout" }
+    ],
+    "prepDay": [
+      "Make the gnocchi cream gratin: eat Friday, freeze any spare.",
+      "Two quick wok cooks during the week; pull chilli from the freezer.",
+      "Fill 2–3 overnight-oats jars (make more fresh midweek); grab baked-pancake squares from the freezer on the other mornings. Re-batch chilli only if low."
+    ],
+    "duringWeek": [
+      { "d": "Mon", "t": "Bro meal: covers Mon + Tue (≈20 min)." },
+      { "d": "Wed", "t": "Fried rice (use cold, day-old rice): covers Wed + Thu (≈20 min)." }
+    ]
+  },
+  {
+    "name": "Week D",
+    "subtitle": "Bake + freezer variety",
+    "breakfast": ["bakedpancake", "oats_base"],
+    "days": [
+      { "d": "Mon", "id": "chicken_mushroom", "tag": "cook" },
+      { "d": "Tue", "id": "chicken_mushroom", "tag": "fridge" },
+      { "d": "Wed", "id": "cannelloni", "tag": "freezer" },
+      { "d": "Thu", "id": "gnocchicream", "tag": "freezer" },
+      { "d": "Fri", "id": "bolognese", "tag": "freezer" },
+      { "d": "Sat", "id": "veganchilli", "tag": "freezer" },
+      { "d": "Sun", "id": "", "tag": "takeout" }
+    ],
+    "prepDay": [
+      "Bake week: oven on. Make the cannelloni — marinara, ricotta-spinach filling, stuff, bake. Eat Wednesday, freeze the spare.",
+      "Baked oven pancake (≈25 min); cut into portions and freeze. Fill 2–3 overnight-oats jars.",
+      "The rest is freezer variety — pull gnocchi gratin (from Week C), bolognese (from Week A) and chilli. Re-batch chilli only if low."
+    ],
+    "duringWeek": [
+      { "d": "Mon", "t": "Chicken in mushroom sauce (cooking cream + mozzarella + parmesan): covers Mon + Tue (≈25 min)." }
+    ]
+  }
+]

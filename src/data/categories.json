@@ -1,0 +1,9 @@
+{
+  "chicken":   { "label": "Chicken",          "color": "#c2492f" },
+  "veg":       { "label": "Vegetarian",       "color": "#5a7d3c" },
+  "vegan":     { "label": "Vegan",            "color": "#3f7d6e" },
+  "breakfast": { "label": "Breakfast",        "color": "#cd9b3f" },
+  "snack":     { "label": "Snacks",           "color": "#8a6d3b" },
+  "basic":     { "label": "Basics & Sauces",  "color": "#7a6a52" },
+  "takeout":   { "label": "Takeout at home",  "color": "#9c5b8a" }
+}

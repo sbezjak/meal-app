@@ -1,0 +1,534 @@
+[
+  {
+    "id": "bro",
+    "title": "Bro Meal — Chicken, Greens & Gravy",
+    "category": "chicken",
+    "portions": "2 portions (eat 2 days, or freeze)",
+    "ingredients": [
+      { "item": "Chicken breast, diced", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Frozen broccoli or green beans", "qty": "1 bag", "aisle": "Frozen" },
+      { "item": "Carb: gnocchi / tortellini / pasta / rice", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Plain flour", "qty": "1–2 tbsp", "aisle": "Grains & carbs" },
+      { "item": "Water (or stock)", "qty": "~250 ml", "aisle": "Pantry" },
+      { "item": "Olive oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Onion powder, oregano, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Season the chicken (onion powder, oregano, salt, pepper) and brown in oil on high heat ~8 min. Keep the browned bits in the pan.",
+      "Lower the heat, sprinkle the flour over the chicken and stir 1 min to cook it out.",
+      "Pour in the water a splash at a time, stirring, until you have a smooth gravy. Simmer 3–4 min to thicken.",
+      "Stir in the green veg to heat through. Serve over the carb (cooked fresh). Eat 2 days from the fridge, or freeze a portion."
+    ]
+  },
+  {
+    "id": "chicken_mushroom",
+    "title": "Chicken in Mushroom Sauce",
+    "category": "chicken",
+    "portions": "2–3 portions (eat 2 days, or freeze)",
+    "ingredients": [
+      { "item": "Chicken breast, diced", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Carb: gnocchi / tortellini / pasta / rice", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Frozen broccoli or green beans", "qty": "1 bag", "aisle": "Frozen" },
+      { "item": "Olive oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Onion powder, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
+      { "item": "→ Mushroom sauce", "qty": "1 batch", "aisle": "ref" }
+    ],
+    "steps": [
+      "Season and brown the chicken in oil; set aside.",
+      "Make the mushroom sauce in the same pan (recipe below) so it picks up the browned bits.",
+      "Return the chicken, add the green veg, simmer to combine.",
+      "Serve over the carb (cooked fresh). Eat 2 days, or freeze."
+    ]
+  },
+  {
+    "id": "tortillas_fresh",
+    "title": "Fresh Chicken Tortillas",
+    "category": "chicken",
+    "portions": "2 portions (assemble fresh, eat 2 days)",
+    "ingredients": [
+      { "item": "Chicken breast, in pieces", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Flour tortillas", "qty": "1 pack", "aisle": "Bakery" },
+      { "item": "Fresh veg: cabbage, cucumber, tomato, corn", "qty": "to fill", "aisle": "Produce" },
+      { "item": "Low-fat shredded cheese (optional)", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "→ Yoghurt sauce", "qty": "1 batch", "aisle": "ref" },
+      { "item": "Smoked paprika, oregano, onion powder, salt", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Season chicken pieces (smoked paprika, oregano, a little onion powder, salt) and brown in a pan; cool a little.",
+      "Make the yoghurt sauce (recipe below) and chop the fresh veg.",
+      "Warm a tortilla, fill with chicken, cabbage, cucumber, tomato, corn (and cheese if you like), spoon over yoghurt sauce and roll. No baking — assemble fresh each time.",
+      "Keep the cooked chicken + chopped veg in the fridge; assemble over 2 days."
+    ]
+  },
+  {
+    "id": "tortillas_baked",
+    "title": "Baked Chicken Tortillas",
+    "category": "chicken",
+    "portions": "2–3 portions (eat 2 days + freeze one)",
+    "ingredients": [
+      { "item": "Chicken breast, in pieces", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Flour tortillas", "qty": "1 pack", "aisle": "Bakery" },
+      { "item": "Salsa", "qty": "1 jar", "aisle": "Cans & jars" },
+      { "item": "Canned beans, drained", "qty": "1 can", "aisle": "Cans & jars" },
+      { "item": "Canned chickpeas, drained", "qty": "1 can", "aisle": "Cans & jars" },
+      { "item": "Shredded cheese", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Sour cream or yoghurt (to serve)", "qty": "to serve", "aisle": "Dairy & eggs" },
+      { "item": "Smoked paprika, oregano, onion powder, salt", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Season chicken pieces (smoked paprika, oregano, a little onion powder, salt) and brown in a pan.",
+      "Fill tortillas with chicken, beans, chickpeas, a little salsa and cheese. Roll up and lay in a dish.",
+      "Bake at 200°C until golden. Eat 2 days from the fridge; freeze one portion.",
+      "Serve with sour cream or yoghurt."
+    ]
+  },
+  {
+    "id": "vietrolls",
+    "title": "Fresh Vietnamese Rice Paper Rolls",
+    "category": "chicken",
+    "portions": "Made fresh — one batch covers a full day (lunch + dinner), keeps for the next day too",
+    "ingredients": [
+      { "item": "Chicken breast, in strips", "qty": "200–250 g", "aisle": "Meat & tofu" },
+      { "item": "Rice paper sheets", "qty": "1 pack", "aisle": "Grains & carbs" },
+      { "item": "Rice noodles", "qty": "1 pack", "aisle": "Grains & carbs" },
+      { "item": "Lettuce", "qty": "1 head", "aisle": "Produce" },
+      { "item": "Cucumber, in thin sticks", "qty": "1", "aisle": "Produce" },
+      { "item": "Carrot, in thin sticks", "qty": "2", "aisle": "Produce" },
+      { "item": "→ Peanut sauce", "qty": "1 batch", "aisle": "ref" }
+    ],
+    "steps": [
+      "Brown the chicken strips, season simply, cool.",
+      "Soak each rice paper sheet ~10 sec until pliable.",
+      "Lay noodles, lettuce, cucumber, carrot and chicken; roll tight like a burrito.",
+      "Serve with peanut sauce (recipe below). Prep the fillings ahead; roll fresh each day."
+    ]
+  },
+  {
+    "id": "friedrice",
+    "title": "Chicken Fried Rice",
+    "category": "chicken",
+    "portions": "2–3 portions",
+    "ingredients": [
+      { "item": "Chicken breast, in pieces", "qty": "500 g", "aisle": "Meat & tofu" },
+      { "item": "Cooked & cooled rice (day-old is best)", "qty": "~280 g uncooked", "aisle": "Grains & carbs" },
+      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Frozen veg mix (cabbage, carrot, broccoli, cauliflower, corn, beans)", "qty": "1 bag", "aisle": "Frozen" },
+      { "item": "Soy sauce", "qty": "to taste", "aisle": "Sauces & oils" },
+      { "item": "Sesame oil", "qty": "1 tsp", "aisle": "Sauces & oils" },
+      { "item": "Onion powder, white pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Season and pan-fry the chicken on high heat until golden; set aside.",
+      "Scramble the egg in the pan, then add the frozen veg and cook through.",
+      "Add the cold cooked rice and stir-fry hot; season with soy, sesame oil, white pepper and a little onion powder.",
+      "Fold the chicken back in, portion and freeze."
+    ]
+  },
+  {
+    "id": "bolognese",
+    "title": "Turkey Bolognese",
+    "category": "chicken",
+    "portions": "~3 portions — cook once, eat 1×/week (scheduled across 2 weeks)",
+    "tip": "Make it once, freeze the portions, and eat just one a week (here it's in 2 weeks; freeze any spare for a third). Vary the carb — spaghetti one week, gnocchi/pasta/polenta another — so you're never on spaghetti two days running.",
+    "ingredients": [
+      { "item": "Minced turkey", "qty": "500 g", "aisle": "Meat & tofu" },
+      { "item": "Olive oil", "qty": "1 tbsp (10 ml)", "aisle": "Sauces & oils" },
+      { "item": "Tomato paste", "qty": "2 tbsp (30 g)", "aisle": "Cans & jars" },
+      { "item": "Passata", "qty": "200 ml", "aisle": "Cans & jars" },
+      { "item": "Water", "qty": "100 ml", "aisle": "Pantry" },
+      { "item": "Milk", "qty": "40 ml (~3 tbsp)", "aisle": "Dairy & eggs" },
+      { "item": "Carb: spaghetti / pasta / gnocchi / polenta (vary it day to day)", "qty": "for 2–3", "aisle": "Grains & carbs" },
+      { "item": "Parmesan (to finish)", "qty": "to taste", "aisle": "Dairy & eggs" },
+      { "item": "Ground onion 1 tsp, oregano 1 tsp, basil 1 tsp, sweet paprika ½ tsp, salt ½ tsp, pepper ¼ tsp, optional pinch sugar", "qty": "as listed", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Heat the olive oil on medium. Add the turkey, break it apart and brown well 5–7 min (let it actually brown — kills the 'boiled' taste).",
+      "Add the ground onion + all dry spices; stir 30 sec.",
+      "Add the tomato paste and cook 1–2 min until it darkens slightly (this cuts the acidity).",
+      "Add the passata + 100 ml water, bring to a gentle simmer, then lower heat and simmer uncovered 20–25 min, stirring occasionally.",
+      "Off the heat, stir in the milk. Taste — if slightly acidic, add a tiny pinch of sugar or another splash of milk. Serve over your carb with parmesan; portion and freeze. Vary the carb so it's not spaghetti both days."
+    ]
+  },
+
+  {
+    "id": "burger",
+    "title": "Chicken Burger + Fries",
+    "category": "takeout",
+    "portions": "2 burgers",
+    "ingredients": [
+      { "item": "Burger buns", "qty": "2", "aisle": "Bakery" },
+      { "item": "American / processed cheese slices", "qty": "2", "aisle": "Dairy & eggs" },
+      { "item": "Lettuce", "qty": "few leaves", "aisle": "Produce" },
+      { "item": "Frozen fries", "qty": "1 portion", "aisle": "Frozen" },
+      { "item": "→ Breaded chicken (patties)", "qty": "2", "aisle": "ref" },
+      { "item": "→ Burger sauce", "qty": "1 batch", "aisle": "ref" }
+    ],
+    "steps": [
+      "Bake/air-fry the breaded patties at 220°C, 15–20 min (recipe below). Air-fry the fries alongside.",
+      "Toast the bun, layer: sauce, cheese, hot patty, lettuce, more sauce.",
+      "Wrap tightly in foil and let it steam a minute — that's the takeout texture."
+    ]
+  },
+  {
+    "id": "chknsalad",
+    "title": "Breaded Chicken Salad Bowl",
+    "category": "takeout",
+    "portions": "Same day (freeze the breaded chicken ahead)",
+    "ingredients": [
+      { "item": "Lettuce", "qty": "1 head", "aisle": "Produce" },
+      { "item": "Tomato, cucumber, green paprika", "qty": "1 each", "aisle": "Produce" },
+      { "item": "Parmesan (to shave)", "qty": "to taste", "aisle": "Dairy & eggs" },
+      { "item": "→ Breaded chicken (pieces)", "qty": "1 portion", "aisle": "ref" },
+      { "item": "→ Yoghurt sauce", "qty": "1 batch", "aisle": "ref" },
+      { "item": "→ Cheese bread", "qty": "side", "aisle": "ref" }
+    ],
+    "steps": [
+      "Bake the breaded chicken pieces (recipe below — make these in the same batch as the burger patties).",
+      "Build the salad: greens, tomato, cucumber, paprika, shaved parmesan.",
+      "Top with hot chicken and yoghurt sauce; serve with warm cheese bread."
+    ]
+  },
+  {
+    "id": "chowmein",
+    "title": "Chinese Chicken Noodles",
+    "category": "takeout",
+    "portions": "2 portions",
+    "ingredients": [
+      { "item": "Chicken breast, sliced thin", "qty": "300 g", "aisle": "Meat & tofu" },
+      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Cabbage + carrot, shredded", "qty": "2 cups", "aisle": "Produce" },
+      { "item": "Egg noodles, cooked", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Light soy + dark soy", "qty": "2 tbsp + 1 tsp", "aisle": "Sauces & oils" },
+      { "item": "Sesame oil", "qty": "1–2 tsp", "aisle": "Sauces & oils" },
+      { "item": "Light olive oil (be generous)", "qty": "2–3 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Sugar, chicken bouillon powder, white pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Whisk the sauce: light + dark soy, sesame oil, a little sugar, chicken bouillon, white pepper.",
+      "High heat, generous olive oil: sear the chicken, push aside, scramble the egg.",
+      "Add cabbage and carrot; stir-fry hot and fast.",
+      "Add the noodles + sauce; toss until glossy and reduced. The sesame oil + generous oil + bouillon give the rich, takeaway feel."
+    ]
+  },
+
+  {
+    "id": "mushroom_veg",
+    "title": "Mushroom Sauce over Pasta (vegetarian)",
+    "category": "veg",
+    "portions": "2 portions (eat 2 days, or freeze)",
+    "ingredients": [
+      { "item": "Carb: pasta / gnocchi / tortellini", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Frozen broccoli or green beans (optional)", "qty": "1 bag", "aisle": "Frozen" },
+      { "item": "→ Mushroom sauce", "qty": "1 batch (double it)", "aisle": "ref" }
+    ],
+    "steps": [
+      "Make a generous batch of mushroom sauce (recipe below).",
+      "Cook the carb; add the green veg if using.",
+      "Fold everything through the sauce. Eat 2 days, or freeze one."
+    ]
+  },
+  {
+    "id": "cannelloni",
+    "title": "Baked Spinach & Ricotta Cannelloni",
+    "category": "veg",
+    "portions": "2 portions",
+    "ingredients": [
+      { "item": "Cannelloni tubes (or large pasta to stuff)", "qty": "1 pack", "aisle": "Grains & carbs" },
+      { "item": "Ricotta", "qty": "250 g", "aisle": "Dairy & eggs" },
+      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Spinach (fresh or frozen)", "qty": "200 g", "aisle": "Produce" },
+      { "item": "Mozzarella (for the top)", "qty": "1 ball / handful", "aisle": "Dairy & eggs" },
+      { "item": "Salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
+      { "item": "→ Marinara sauce", "qty": "1 batch", "aisle": "ref" }
+    ],
+    "steps": [
+      "Make the marinara (recipe below) so you control the spices.",
+      "Mix the filling: ricotta, egg, parmesan, wilted/chopped spinach, salt and pepper.",
+      "Pipe or spoon the filling into the cannelloni tubes; lay in a baking dish.",
+      "Pour marinara over, scatter mozzarella, bake at 190°C ~30 min until bubbling and golden. Cool and freeze a portion (single-use dish reheats straight from the freezer)."
+    ]
+  },
+  {
+    "id": "gnocchicream",
+    "title": "Gnocchi in Cream Sauce (± chicken)",
+    "category": "veg",
+    "portions": "2 portions (eat 2 days, or freeze)",
+    "tip": "Three meals from one base: gnocchi + cream sauce (veg) · add grilled chicken to make it heartier · or swap in the mushroom sauce. Even just cheese + gnocchi works.",
+    "ingredients": [
+      { "item": "Gnocchi", "qty": "500 g", "aisle": "Grains & carbs" },
+      { "item": "Mozzarella (for the top)", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "→ Cream sauce", "qty": "1 batch", "aisle": "ref" }
+    ],
+    "steps": [
+      "Cook the gnocchi. Make the cream sauce (recipe below) — or use the mushroom sauce instead for a different flavour.",
+      "Fold the gnocchi through the sauce. Want it heartier? Add grilled chicken pieces.",
+      "For the gratin: transfer to a dish, top with mozzarella, grill/bake until golden. Or skip the bake for a quick stovetop version. Eat 2 days, or freeze one."
+    ]
+  },
+
+  {
+    "id": "veganchilli",
+    "title": "Vegan Bean & Lentil Chilli",
+    "category": "vegan",
+    "portions": "3 portions",
+    "ingredients": [
+      { "item": "Bell pepper + carrot, diced", "qty": "1 each", "aisle": "Produce" },
+      { "item": "Red lentils — or 200 g crumbled tofu", "qty": "100 g dry", "aisle": "Grains & carbs" },
+      { "item": "Kidney beans + black beans, drained", "qty": "1 can each", "aisle": "Cans & jars" },
+      { "item": "Chopped tomatoes + tomato paste", "qty": "1 can + 1 tbsp", "aisle": "Cans & jars" },
+      { "item": "Corn", "qty": "1 cup", "aisle": "Cans & jars" },
+      { "item": "Vegetable stock or water", "qty": "~300 ml", "aisle": "Pantry" },
+      { "item": "Rice (to serve)", "qty": "for 3", "aisle": "Grains & carbs" },
+      { "item": "Soy sauce", "qty": "splash", "aisle": "Sauces & oils" },
+      { "item": "Smoked paprika, chili powder, oregano, onion powder, salt", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Soften the diced pepper and carrot in oil.",
+      "Add smoked paprika, chili and onion powder 30 sec, then tomatoes, paste, beans, corn and the red lentils.",
+      "Add the stock/water and simmer 20–25 min until the lentils are soft and it's thick (top up with water if needed). Season with salt and a splash of soy.",
+      "Portion over rice; eat one, freeze two. (Crumbled tofu instead of lentils also works — add it with the beans.)"
+    ]
+  },
+
+  {
+    "id": "oats_base",
+    "title": "Overnight Oats — Base + Mix-ins",
+    "category": "breakfast",
+    "portions": "1 jar (scale ×5 for the week)",
+    "ingredients": [
+      { "item": "Rolled oats", "qty": "50 g", "aisle": "Grains & carbs" },
+      { "item": "Milk or plant drink", "qty": "120 ml", "aisle": "Dairy & eggs" },
+      { "item": "Cinnamon", "qty": "pinch", "aisle": "Spices & dried herbs" },
+      { "item": "Honey", "qty": "1 tsp", "aisle": "Sauces & oils" }
+    ],
+    "steps": [
+      "Base: stir oats + milk + cinnamon + honey in a jar, lid on, fridge overnight. Eat cold.",
+      "Then pick mix-ins from whatever you have — grated apple, mashed or sliced banana, frozen blueberries (they thaw overnight), cocoa powder, chia seeds (for a thicker pudding), peanut butter, a handful of nuts.",
+      "Combos that work: apple + cinnamon · banana + cocoa · blueberry + chia · peanut butter + banana.",
+      "Make 3–5 jars at once — they keep 3–4 days."
+    ]
+  },
+  {
+    "id": "banana_egg_muffins",
+    "title": "Banana & Oat Muffins",
+    "category": "breakfast",
+    "portions": "~10 muffins (freeze)",
+    "ingredients": [
+      { "item": "Ripe bananas, mashed", "qty": "2–3", "aisle": "Produce" },
+      { "item": "Eggs", "qty": "2", "aisle": "Dairy & eggs" },
+      { "item": "Rolled oats", "qty": "200 g", "aisle": "Grains & carbs" },
+      { "item": "Quark (optional — higher-protein, moister)", "qty": "150 g", "aisle": "Dairy & eggs" },
+      { "item": "Baking powder", "qty": "1 tsp", "aisle": "Pantry" },
+      { "item": "Mix-ins: nuts, fruit, dark chocolate, cinnamon", "qty": "to taste", "aisle": "Pantry" }
+    ],
+    "steps": [
+      "Heat oven to 180°C.",
+      "Mash bananas, mix with eggs (and quark if using), then oats and baking powder to a thick batter (blend half the oats for a finer texture).",
+      "Fold in whatever mix-ins you have — chopped nuts, berries, dark chocolate, a little cinnamon.",
+      "Spoon into a muffin tin, bake ~20 min until set. Cool and freeze in pairs."
+    ],
+    "tip": "Add 150 g quark (and a scoop of protein powder if you like) for the higher-protein 'banana-oat-quark' version."
+  },
+  {
+    "id": "protpancakes",
+    "title": "Protein Pancakes + Toppings",
+    "category": "breakfast",
+    "portions": "1 serving",
+    "ingredients": [
+      { "item": "Banana or oats", "qty": "1 / 50 g", "aisle": "Produce" },
+      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Protein powder or protein batter pancake mix", "qty": "1 scoop", "aisle": "Pantry" },
+      { "item": "Milk", "qty": "splash", "aisle": "Dairy & eggs" },
+      { "item": "Toppings: granola, fruit, spread", "qty": "to taste", "aisle": "Pantry" }
+    ],
+    "steps": [
+      "Blend to a batter.",
+      "Cook small pancakes in a non-stick pan.",
+      "Stack and top with granola, fruit, a spread."
+    ]
+  },
+  {
+    "id": "bakedpancake",
+    "title": "Baked Oven Pancake",
+    "category": "breakfast",
+    "portions": "8 portions (freeze)",
+    "ingredients": [
+      { "item": "Flour", "qty": "450 g", "aisle": "Grains & carbs" },
+      { "item": "Milk", "qty": "550 ml", "aisle": "Dairy & eggs" },
+      { "item": "Eggs", "qty": "2", "aisle": "Dairy & eggs" },
+      { "item": "Banana + frozen strawberries (to top)", "qty": "to top", "aisle": "Produce" },
+      { "item": "Dark chocolate chunks", "qty": "handful", "aisle": "Pantry" },
+      { "item": "Sugar/sweetener; baking powder; coconut oil or butter", "qty": "to taste", "aisle": "Pantry" }
+    ],
+    "steps": [
+      "Heat oven to 180°C. Whisk milk, oil, egg, sugar; add flour + baking powder to a smooth batter.",
+      "Grease a tray, pour the batter, scatter chocolate and fruit on top.",
+      "Bake 20–30 min. Cool, cut into portions and freeze."
+    ]
+  },
+
+  {
+    "id": "mushroom_sauce",
+    "title": "Mushroom Sauce (creamy)",
+    "category": "basic",
+    "portions": "1 batch",
+    "ingredients": [
+      { "item": "Mushrooms, sliced", "qty": "250 g", "aisle": "Produce" },
+      { "item": "Cooking cream 10% fat", "qty": "150–200 ml", "aisle": "Dairy & eggs" },
+      { "item": "Mozzarella", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Butter or oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Onion powder, thyme, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Sauté the mushrooms in butter/oil until golden and the water has cooked off.",
+      "Lower the heat, pour in the cooking cream.",
+      "Melt in the mozzarella and parmesan; simmer to a glossy sauce.",
+      "Season with onion powder, thyme, salt and pepper."
+    ]
+  },
+  {
+    "id": "cream",
+    "title": "Cream Sauce",
+    "category": "basic",
+    "portions": "1 batch",
+    "ingredients": [
+      { "item": "Cooking cream", "qty": "200 ml", "aisle": "Dairy & eggs" },
+      { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Light cream cheese wedge", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Mozzarella", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Herbs, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Warm the cream gently.",
+      "Melt in the cream cheese wedge, parmesan and mozzarella.",
+      "Loosen with a splash of starchy pasta/gnocchi water until silky; season."
+    ]
+  },
+  {
+    "id": "marinara",
+    "title": "Marinara Sauce (no-cook)",
+    "category": "basic",
+    "portions": "1 batch",
+    "ingredients": [
+      { "item": "Tomato passata or chopped tomatoes", "qty": "1 can/bottle", "aisle": "Cans & jars" },
+      { "item": "Tomato paste", "qty": "1 tbsp", "aisle": "Cans & jars" },
+      { "item": "Oregano, basil, onion powder, pinch sugar, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Stir everything together: passata/tomatoes, tomato paste, oregano, basil, a little onion powder, a pinch of sugar, salt and pepper.",
+      "No need to cook it — it bakes through in the cannelloni or pizza. Taste and adjust the spices."
+    ]
+  },
+  {
+    "id": "dough",
+    "title": "2-Ingredient Dough (cheese bread / mini pizza)",
+    "category": "basic",
+    "portions": "Bake & freeze in portions",
+    "ingredients": [
+      { "item": "Greek yoghurt", "qty": "150 g", "aisle": "Dairy & eggs" },
+      { "item": "Self-rising flour (or plain + baking powder + salt)", "qty": "140–160 g", "aisle": "Grains & carbs" },
+      { "item": "Mozzarella, cheddar or parmesan (to top)", "qty": "to top", "aisle": "Dairy & eggs" },
+      { "item": "Olive oil; oregano or basil", "qty": "to taste", "aisle": "Sauces & oils" }
+    ],
+    "steps": [
+      "Mix yoghurt + flour to a soft dough.",
+      "Shape: flatbread, mini pizza, cheese sticks or herb strips.",
+      "Top with cheese, brush with oil, scatter herbs.",
+      "Oven 220°C, 10–14 min (or air fryer 190°C, 6–9 min). Bake first, then freeze."
+    ]
+  },
+  {
+    "id": "breaded",
+    "title": "Breaded Chicken (patties + pieces, one batch)",
+    "category": "basic",
+    "portions": "Big batch — freeze",
+    "ingredients": [
+      { "item": "Chicken breast (patties and/or pieces)", "qty": "as needed", "aisle": "Meat & tofu" },
+      { "item": "Egg, beaten", "qty": "1–2", "aisle": "Dairy & eggs" },
+      { "item": "Breadcrumbs / panko", "qty": "300–500 g", "aisle": "Pantry" },
+      { "item": "Paprika, oregano, onion powder, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Season chicken (paprika, oregano, a little onion powder, salt, pepper). Dip in egg, then breadcrumbs.",
+      "Make patties (for burgers) and pieces (for the salad bowl) in the same go.",
+      "Oven/air-fry 220°C, 15–20 min until golden.",
+      "Cool fully, freeze flat on a tray, then bag up."
+    ]
+  },
+  {
+    "id": "burgersauce",
+    "title": "Bacon Cheese Burger Sauce",
+    "category": "basic",
+    "portions": "Small batch",
+    "ingredients": [
+      { "item": "Light mayo", "qty": "2 tbsp", "aisle": "Sauces & oils" },
+      { "item": "American/processed cheese slice, melted", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Smoked paprika, onion powder, black pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
+      { "item": "Liquid smoke (or extra smoked paprika)", "qty": "1 drop", "aisle": "Sauces & oils" }
+    ],
+    "steps": [
+      "Gently melt the cheese slice and stir it into the mayo while warm.",
+      "Beat in smoked paprika, onion powder and pepper.",
+      "Add a single drop of liquid smoke — that's the takeout flavour. Cool slightly before building the burger."
+    ]
+  },
+  {
+    "id": "yogsauce",
+    "title": "Yoghurt Salad Sauce",
+    "category": "basic",
+    "portions": "Small batch",
+    "ingredients": [
+      { "item": "Liquid/drinking yoghurt (or thinned Greek yoghurt)", "qty": "1 cup", "aisle": "Dairy & eggs" },
+      { "item": "Lemon", "qty": "squeeze", "aisle": "Produce" },
+      { "item": "Dried dill, onion powder, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Whisk yoghurt with dill, a little onion powder, salt and pepper.",
+      "Loosen with lemon (and a splash of milk) to a pourable sauce. Chill until needed."
+    ]
+  },
+  {
+    "id": "peanut",
+    "title": "Peanut Sauce",
+    "category": "basic",
+    "portions": "Small batch",
+    "ingredients": [
+      { "item": "Peanut butter", "qty": "2 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Soy sauce", "qty": "1 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Lime juice or rice vinegar", "qty": "1 tsp", "aisle": "Sauces & oils" },
+      { "item": "Honey or maple", "qty": "1 tsp", "aisle": "Sauces & oils" },
+      { "item": "Sesame oil", "qty": "1/2 tsp", "aisle": "Sauces & oils" },
+      { "item": "Warm water (to thin)", "qty": "to loosen", "aisle": "Pantry" }
+    ],
+    "steps": [
+      "Whisk peanut butter, soy, lime/vinegar, honey and sesame oil.",
+      "Loosen with warm water a teaspoon at a time until it coats a spoon. Use maple instead of honey to keep it vegan."
+    ]
+  },
+
+  {
+    "id": "snacks",
+    "title": "Snack & Quick-Bite Ideas",
+    "category": "snack",
+    "portions": "Grab as needed",
+    "ingredients": [
+      { "item": "Frozen quark + dark chocolate", "qty": "—", "aisle": "Dairy & eggs", "group": "Sweet" },
+      { "item": "Skyr / quark cups with chocolate", "qty": "—", "aisle": "Dairy & eggs", "group": "Sweet" },
+      { "item": "Protein pudding + dark chocolate", "qty": "—", "aisle": "Dairy & eggs", "group": "Sweet" },
+      { "item": "Protein drops / bars / oat bars", "qty": "—", "aisle": "Pantry", "group": "Sweet" },
+      { "item": "Grapes", "qty": "—", "aisle": "Produce", "group": "Fruity" },
+      { "item": "Baked apples with cinnamon", "qty": "—", "aisle": "Produce", "group": "Fruity" },
+      { "item": "Dates / prunes", "qty": "—", "aisle": "Pantry", "group": "Fruity" },
+      { "item": "Fruit + granola", "qty": "—", "aisle": "Pantry", "group": "Fruity" },
+      { "item": "Toast with melted cheese", "qty": "—", "aisle": "Bakery", "group": "Savoury & quick dinners" },
+      { "item": "Toasted sandwich (cheese, or cheese + ham)", "qty": "—", "aisle": "Bakery", "group": "Savoury & quick dinners" },
+      { "item": "Plain sandwich / protein spread on bread", "qty": "—", "aisle": "Bakery", "group": "Savoury & quick dinners" },
+      { "item": "Oatmeal", "qty": "—", "aisle": "Grains & carbs", "group": "Savoury & quick dinners" }
+    ],
+    "steps": [
+      "Go-to snacks and light dinners — keep them stocked, no plan needed. Grab whatever fits the craving."
+    ]
+  }
+]
