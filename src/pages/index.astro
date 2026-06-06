@@ -314,6 +314,65 @@ import categories from '../data/categories.json';
     }
 
     // ===== SHOPPING =====
+    // Spice/herb lines are written as blends ("Smoked paprika, onion powder, salt"). For shopping we split them
+    // into individual jars, strip amounts, and normalise a few synonyms so the aisle isn't full of overlapping blends.
+    const SPICE_ALIAS = { 'ground onion':'onion powder', 'black pepper':'pepper', 'paprika':'sweet paprika', 'dried dill':'dill' };
+    const isNoShop = n => /^(warm |cold |hot |luke ?warm )?water$/i.test(n.trim()); // tap water — never put it on the list
+    function cleanSpice(tok){
+      let s = tok.toLowerCase()
+        .replace(/(¼|½|¾|⅓|⅔|\d+(?:\.\d+)?)\s*(tsp|tbsp|teaspoons?|tablespoons?|cups?|g)\b/g, '')
+        .replace(/\b(optional|pinch|a little|to taste|generous|of)\b/g, '')
+        .replace(/\s+/g, ' ').trim();
+      s = SPICE_ALIAS[s] || s;
+      return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+    }
+    // The shopping name(s) for one ingredient: spice blends explode into individual items; everything else is a
+    // single name from `buy` (explicit canonical name) or the item with any trailing "(note)" stripped.
+    function shopNames(ing){
+      if((ing.aisle || '') === 'Spices & dried herbs' && !ing.buy)
+        return ing.item.split(/[;,]/).map(cleanSpice).filter(Boolean);
+      // An explicit `buy` is a deliberate canonical name — keep it verbatim; only strip "(notes)" off raw item text.
+      return [ ing.buy ? ing.buy.trim() : ing.item.replace(/\s*\([^)]*\)\s*$/, '').trim() ];
+    }
+    // Total a list of raw amounts ("400–500 g", "1 tbsp", "for 2", "handful") into one buy-this-much string.
+    // Sums each unit it understands (g/kg, ml/l, tbsp/tsp, plain counts, "for N" portions) carrying ranges
+    // through; anything it can't parse (handful, to taste…) becomes a trailing "+" meaning "a bit more on top".
+    function sumQty(list){
+      if(!list || !list.length) return '';
+      const tot = {}; const vague = new Set();
+      const addU = (u, lo, hi) => { (tot[u] ||= {lo:0, hi:0}); tot[u].lo += lo; tot[u].hi += hi; };
+      const toNum = s => { s = String(s).replace(',', '.'); const f = s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/); return f ? (+f[1])/(+f[2]) : parseFloat(s); };
+      list.forEach(raw => {
+        let s = String(raw).toLowerCase()
+          .replace(/\([^)]*\)/g, ' ').replace(/[~≈]/g, '')
+          .replace(/½/g,'0.5').replace(/¼/g,'0.25').replace(/¾/g,'0.75').replace(/⅓/g,'0.33').replace(/⅔/g,'0.67')
+          .trim();
+        let m = s.match(/for\s+(\d+(?:\.\d+)?)(?:\s*[–-]\s*(\d+(?:\.\d+)?))?/);
+        if(m){ addU('portions', +m[1], m[2]?+m[2]:+m[1]); return; }
+        m = s.match(/^(\d+(?:[.,]\d+)?(?:\s*\/\s*\d+)?)\s*(?:[–-]\s*(\d+(?:[.,]\d+)?))?\s*(kg|g|ml|l|tbsp|tsp|teaspoons?|tablespoons?)?/);
+        if(m && m[1]){
+          let lo = toNum(m[1]), hi = m[2] ? toNum(m[2]) : lo, u = m[3] || '';
+          if(u==='kg'){ lo*=1000; hi*=1000; u='g'; }
+          else if(u==='l'){ lo*=1000; hi*=1000; u='ml'; }
+          else if(/^t(sp|easpoon)/.test(u)){ lo/=3; hi/=3; u='tbsp'; }
+          else if(/^t(bsp|ablespoon)/.test(u)){ u='tbsp'; }
+          else if(!u){ u='ct'; }
+          if(!isNaN(lo)){ addU(u, lo, hi); return; }
+        }
+        if(s) vague.add(s);
+      });
+      const rng = (lo, hi, unit, round) => { const a = round(lo), b = round(hi); return (a===b ? String(a) : a+'–'+b) + unit; };
+      const r0 = n => Math.round(n), r1 = n => Math.round(n*10)/10, rHalf = n => Math.round(n*2)/2;
+      const parts = [];
+      if(tot.g){ const {lo,hi}=tot.g; parts.push(hi>=1000 ? rng(lo/1000,hi/1000,' kg',r1) : rng(lo,hi,' g',r0)); }
+      if(tot.ml){ const {lo,hi}=tot.ml; parts.push(hi>=1000 ? rng(lo/1000,hi/1000,' l',r1) : rng(lo,hi,' ml',r0)); }
+      if(tot.tbsp){ const {lo,hi}=tot.tbsp; parts.push(rng(lo,hi,' tbsp',rHalf)); }
+      if(tot.ct){ const {lo,hi}=tot.ct; parts.push(rng(lo,hi,'',r0)); }
+      if(tot.portions){ const {lo,hi}=tot.portions; parts.push('for ' + (lo===hi ? r0(lo) : r0(lo)+'–'+r0(hi))); }
+      let out = parts.join(' + ');
+      if(vague.size) out = out ? out + ' +' : (vague.has('as needed') ? 'as needed' : 'some');
+      return out;
+    }
     function gatherIngredients(recipeIds){
       const map = new Map(); const visited = new Set();
       function add(r){
@@ -321,13 +380,19 @@ import categories from '../data/categories.json';
         visited.add(r.id);
         r.ingredients.forEach(ing => {
           if(ing.item.startsWith('→')){ const id=resolveRef(ing.item); if(id) add(R[id]); return; }
-          const key = ing.item.toLowerCase();
-          if(!map.has(key)) map.set(key, { item: ing.item, qtys: new Set(), aisle: ing.aisle || 'Other' });
-          if(ing.qty && ing.qty!=='—') map.get(key).qtys.add(ing.qty);
+          const names = shopNames(ing);
+          names.forEach(name => {
+            if(isNoShop(name)) return;
+            const key = name.toLowerCase();
+            if(!map.has(key)) map.set(key, { item: name, qtys: [], aisle: ing.aisle || 'Other' });
+            // Keep every amount (with repeats) so the shopping list can total them. A blend's qty is
+            // meaningless once split, so only carry it when the line maps to a single item.
+            if(names.length === 1 && ing.qty && ing.qty !== '—') map.get(key).qtys.push(ing.qty);
+          });
         });
       }
       recipeIds.forEach(id => add(R[id]));
-      return [...map.values()].map(v => ({ item:v.item, qty:[...v.qtys].join(' + '), aisle:v.aisle }));
+      return [...map.values()].map(v => ({ item:v.item, qtys:v.qtys, aisle:v.aisle }));
     }
     // Shopping scope: stock up for one week, or the whole rotation (master list).
     let shopScope = LS.get('shopScope', 'week');
@@ -345,9 +410,10 @@ import categories from '../data/categories.json';
       const byId = new Map();
       const bump = (i, wi, added) => {
         const id = itemId(i);
-        if(!byId.has(id)) byId.set(id, { item:i.item, aisle:i.aisle, qtys:new Set(), wks:new Set(), added:false });
+        if(!byId.has(id)) byId.set(id, { item:i.item, aisle:i.aisle, qtys:[], wks:new Set(), added:false });
         const e = byId.get(id);
-        if(i.qty) String(i.qty).split(' + ').forEach(q => { if(q) e.qtys.add(q); });
+        const qs = i.qtys || (i.qty!=null && i.qty!=='' ? [i.qty] : []);
+        qs.forEach(q => e.qtys.push(q));
         e.wks.add(wi);
         if(added) e.added = true;
       };
@@ -355,7 +421,7 @@ import categories from '../data/categories.json';
         gatherIngredients(plannedRecipeIds(weeks[wi])).forEach(i => bump(i, wi, false));
         LS.get('shop:manual:'+wi, []).forEach(i => bump(i, wi, true));
       });
-      const items = [...byId.values()].map(e => ({ item:e.item, aisle:e.aisle, qty:[...e.qtys].join(' + '), weeks:e.wks.size, added:e.added }));
+      const items = [...byId.values()].map(e => ({ item:e.item, aisle:e.aisle, qty:sumQty(e.qtys), weeks:e.wks.size, added:e.added }));
       const groups = {};
       items.forEach(i => { (groups[i.aisle] ||= []).push(i); });
       const order = Object.keys(groups).sort((a,b)=>{ const ai=AISLE_ORDER.indexOf(a),bi=AISLE_ORDER.indexOf(b); return (ai<0?99:ai)-(bi<0?99:bi); });
@@ -370,26 +436,41 @@ import categories from '../data/categories.json';
       if(shopScope==='all') return 'Everything across all weeks, deduped and sorted by aisle — for one big stock-up trip. "×N wks" marks items several weeks need (buy more of those). Tick as you shop.';
       return 'Auto-built from this week’s meals + breakfasts, sorted by aisle. Tick as you shop.';
     }
+    let shopBasketOpen = false; // the bottom "In the basket" section starts collapsed so only to-buy items show
     function renderShop(){
       document.getElementById('shopTitle').textContent = scopeTitle();
       document.getElementById('shopSub').textContent = scopeSub();
       document.querySelectorAll('#scopeBar button').forEach(b => b.classList.toggle('active', b.dataset.scope===shopScope));
       const { order, groups } = buildShop();
       const checks = LS.get(checkKey(), {});
-      let html='';
-      order.forEach(aisle => {
-        html += `<div class="shopgroup"><div class="gh">${aisle}</div>`;
-        groups[aisle].forEach(i => {
-          const id = itemId(i);
-          html += `<div class="shopitem ${checks[id]?'done':''}" data-id="${id}">
+      const itemHTML = (i, done) => {
+        const id = itemId(i);
+        return `<div class="shopitem ${done?'done':''}" data-id="${id}">
             <span class="box">✓</span>
             <span class="txt">${i.item}${i.added?'<span class="added-tag">added</span>':''}${i.weeks>1?`<span class="wk-tag">×${i.weeks} wks</span>`:''}</span>
             <span class="amt">${i.qty||''}</span>
             ${i.added?`<button class="rm" data-rm="${id}" aria-label="Remove">✕</button>`:''}</div>`;
-        });
-        html += `</div>`;
+      };
+      let html=''; const basket=[];
+      order.forEach(aisle => {
+        const todo = [];
+        groups[aisle].forEach(i => (checks[itemId(i)] ? basket : todo).push(i));
+        if(todo.length){
+          html += `<div class="shopgroup"><div class="gh">${aisle}</div>`;
+          todo.forEach(i => { html += itemHTML(i, false); });
+          html += `</div>`;
+        }
       });
-      document.getElementById('shopContent').innerHTML = html || '<p style="color:var(--muted)">Nothing here yet.</p>';
+      if(!html && !basket.length) html = '<p style="color:var(--muted)">Nothing here yet.</p>';
+      else if(!html) html = '<p class="shop-alldone">🎉 Everything ticked off!</p>';
+      if(basket.length){
+        basket.sort((a,b)=>a.item.localeCompare(b.item));
+        html += `<div class="shopgroup basket ${shopBasketOpen?'open':''}">
+          <button class="basket-h" data-basket>✓ In the basket <span class="basket-n">${basket.length}</span><span class="basket-chev">▾</span></button>
+          <div class="basket-items">${basket.map(i => itemHTML(i, true)).join('')}</div>
+        </div>`;
+      }
+      document.getElementById('shopContent').innerHTML = html;
       document.getElementById('copyArea').value = shopText();
     }
     function shopText(){
@@ -439,8 +520,10 @@ import categories from '../data/categories.json';
       }
       const rmEl = t.closest('[data-rm]');
       if(rmEl){ e.stopPropagation(); removeManual(rmEl.dataset.rm); renderShop(); return; }
+      const basketH = t.closest('#shopContent [data-basket]');
+      if(basketH){ shopBasketOpen = !shopBasketOpen; renderShop(); return; }
       const shopIt = t.closest('#shopContent .shopitem');
-      if(shopIt){ shopIt.classList.toggle('done'); toggleCheck(shopIt.dataset.id); return; }
+      if(shopIt){ toggleCheck(shopIt.dataset.id); renderShop(); return; }
       const tab = t.closest('.tab');
       if(tab){ switchTab(tab.dataset.view); return; }
     });

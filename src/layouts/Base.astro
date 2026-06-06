@@ -132,10 +132,21 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/"
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
     .toolbtn{font-family:'Karla';font-weight:700;font-size:.72rem;background:transparent;border:1px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:20px;cursor:pointer}
     .toolbtn:hover{border-color:var(--accent);color:var(--accent)}
-    .shopgroup{margin-bottom:14px}
-    .shopgroup .gh{font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;color:var(--accent-d);margin-bottom:6px}
-    .shopitem{display:flex;align-items:center;gap:11px;padding:9px 12px;background:var(--card);border:1px solid var(--line);border-radius:9px;margin-bottom:5px;cursor:pointer;user-select:none;box-shadow:var(--sh)}
+    .shopgroup{margin-bottom:14px;display:flex;flex-direction:column}
+    .shopgroup .gh{font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;color:var(--accent-d);margin-bottom:6px;order:-1}
+    .shopitem{display:flex;align-items:center;gap:11px;padding:9px 12px;background:var(--card);border:1px solid var(--line);border-radius:9px;margin-bottom:5px;cursor:pointer;user-select:none;box-shadow:var(--sh);transition:opacity .15s}
+    /* Ticked items leave their aisle entirely and collect in the collapsed "In the basket" section below,
+       so while shopping you only see what's left to grab. */
+    .shopitem.done{opacity:.55}
     .shopitem:hover{border-color:var(--muted)}
+    .shop-alldone{color:var(--accent-d);font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;text-align:center;padding:18px 0}
+    .shopgroup.basket{margin-top:20px;border-top:1px dashed var(--line);padding-top:14px}
+    .basket-h{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;cursor:pointer;font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;color:var(--muted);padding:0;margin-bottom:6px;order:-1}
+    .basket-n{background:var(--line);color:var(--accent-d);border-radius:11px;padding:1px 9px;font-size:.82rem;font-family:'Karla',sans-serif}
+    .basket-chev{margin-left:auto;transition:transform .15s}
+    .basket.open .basket-chev{transform:rotate(180deg)}
+    .basket-items{display:none}
+    .basket.open .basket-items{display:block}
     .shopitem .box{width:20px;height:20px;border:2px solid var(--muted);border-radius:5px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:#fff;transition:.1s}
     .shopitem.done .box{background:var(--accent);border-color:var(--accent)}
     .shopitem.done .txt{text-decoration:line-through;color:#c3bdb2}

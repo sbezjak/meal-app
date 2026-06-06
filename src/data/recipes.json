@@ -5,9 +5,9 @@
     "category": "chicken",
     "portions": "2 portions (eat 2 days, or freeze)",
     "ingredients": [
-      { "item": "Chicken breast, diced", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Chicken breast, diced", "buy": "Chicken breast", "qty": "400–500 g", "aisle": "Meat & tofu" },
       { "item": "Frozen broccoli or green beans", "qty": "1 bag", "aisle": "Frozen" },
-      { "item": "Carb: gnocchi / tortellini / pasta / rice", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Carb: gnocchi / tortellini / pasta / rice", "buy": "Carb (your pick)", "qty": "for 2", "aisle": "Grains & carbs" },
       { "item": "Plain flour", "qty": "1–2 tbsp", "aisle": "Grains & carbs" },
       { "item": "Water (or stock)", "qty": "~250 ml", "aisle": "Pantry" },
       { "item": "Olive oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
@@ -26,8 +26,8 @@
     "category": "chicken",
     "portions": "2–3 portions (eat 2 days, or freeze)",
     "ingredients": [
-      { "item": "Chicken breast, diced", "qty": "400–500 g", "aisle": "Meat & tofu" },
-      { "item": "Carb: gnocchi / tortellini / pasta / rice", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Chicken breast, diced", "buy": "Chicken breast", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Carb: gnocchi / tortellini / pasta / rice", "buy": "Carb (your pick)", "qty": "for 2", "aisle": "Grains & carbs" },
       { "item": "Frozen broccoli or green beans", "qty": "1 bag", "aisle": "Frozen" },
       { "item": "Olive oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
       { "item": "Onion powder, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
@@ -46,10 +46,10 @@
     "category": "chicken",
     "portions": "2 portions (assemble fresh, eat 2 days)",
     "ingredients": [
-      { "item": "Chicken breast, in pieces", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Chicken breast, in pieces", "buy": "Chicken breast", "qty": "400–500 g", "aisle": "Meat & tofu" },
       { "item": "Flour tortillas", "qty": "1 pack", "aisle": "Bakery" },
       { "item": "Fresh veg: cabbage, cucumber, tomato, corn", "qty": "to fill", "aisle": "Produce" },
-      { "item": "Low-fat shredded cheese (optional)", "qty": "handful", "aisle": "Dairy & eggs" },
+      { "item": "Low-fat shredded cheese (optional)", "buy": "Shredded cheese", "qty": "handful", "aisle": "Dairy & eggs" },
       { "item": "→ Yoghurt sauce", "qty": "1 batch", "aisle": "ref" },
       { "item": "Smoked paprika, oregano, onion powder, salt", "qty": "to taste", "aisle": "Spices & dried herbs" }
     ],
@@ -66,7 +66,7 @@
     "category": "chicken",
     "portions": "2–3 portions (eat 2 days + freeze one)",
     "ingredients": [
-      { "item": "Chicken breast, in pieces", "qty": "400–500 g", "aisle": "Meat & tofu" },
+      { "item": "Chicken breast, in pieces", "buy": "Chicken breast", "qty": "400–500 g", "aisle": "Meat & tofu" },
       { "item": "Flour tortillas", "qty": "1 pack", "aisle": "Bakery" },
       { "item": "Salsa", "qty": "1 jar", "aisle": "Cans & jars" },
       { "item": "Canned beans, drained", "qty": "1 can", "aisle": "Cans & jars" },
@@ -88,7 +88,7 @@
     "category": "chicken",
     "portions": "Made fresh — one batch covers a full day (lunch + dinner), keeps for the next day too",
     "ingredients": [
-      { "item": "Chicken breast, in strips", "qty": "200–250 g", "aisle": "Meat & tofu" },
+      { "item": "Chicken breast, in strips", "buy": "Chicken breast", "qty": "200–250 g", "aisle": "Meat & tofu" },
       { "item": "Rice paper sheets", "qty": "1 pack", "aisle": "Grains & carbs" },
       { "item": "Rice noodles", "qty": "1 pack", "aisle": "Grains & carbs" },
       { "item": "Lettuce", "qty": "1 head", "aisle": "Produce" },
@@ -109,9 +109,9 @@
     "category": "chicken",
     "portions": "2–3 portions",
     "ingredients": [
-      { "item": "Chicken breast, in pieces", "qty": "500 g", "aisle": "Meat & tofu" },
+      { "item": "Chicken breast, in pieces", "buy": "Chicken breast", "qty": "500 g", "aisle": "Meat & tofu" },
       { "item": "Cooked & cooled rice (day-old is best)", "qty": "~280 g uncooked", "aisle": "Grains & carbs" },
-      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Frozen veg mix (cabbage, carrot, broccoli, cauliflower, corn, beans)", "qty": "1 bag", "aisle": "Frozen" },
       { "item": "Soy sauce", "qty": "to taste", "aisle": "Sauces & oils" },
       { "item": "Sesame oil", "qty": "1 tsp", "aisle": "Sauces & oils" },
@@ -137,7 +137,7 @@
       { "item": "Passata", "qty": "200 ml", "aisle": "Cans & jars" },
       { "item": "Water", "qty": "100 ml", "aisle": "Pantry" },
       { "item": "Milk", "qty": "40 ml (~3 tbsp)", "aisle": "Dairy & eggs" },
-      { "item": "Carb: spaghetti / pasta / gnocchi / polenta (vary it day to day)", "qty": "for 2–3", "aisle": "Grains & carbs" },
+      { "item": "Carb: spaghetti / pasta / gnocchi / polenta (vary it day to day)", "buy": "Carb (your pick)", "qty": "for 2–3", "aisle": "Grains & carbs" },
       { "item": "Parmesan (to finish)", "qty": "to taste", "aisle": "Dairy & eggs" },
       { "item": "Ground onion 1 tsp, oregano 1 tsp, basil 1 tsp, sweet paprika ½ tsp, salt ½ tsp, pepper ¼ tsp, optional pinch sugar", "qty": "as listed", "aisle": "Spices & dried herbs" }
     ],
@@ -157,7 +157,7 @@
     "portions": "2 burgers",
     "ingredients": [
       { "item": "Burger buns", "qty": "2", "aisle": "Bakery" },
-      { "item": "American / processed cheese slices", "qty": "2", "aisle": "Dairy & eggs" },
+      { "item": "American / processed cheese slices", "buy": "American cheese slices", "qty": "2", "aisle": "Dairy & eggs" },
       { "item": "Lettuce", "qty": "few leaves", "aisle": "Produce" },
       { "item": "Frozen fries", "qty": "1 portion", "aisle": "Frozen" },
       { "item": "→ Breaded chicken (patties)", "qty": "2", "aisle": "ref" },
@@ -194,13 +194,13 @@
     "category": "takeout",
     "portions": "2 portions",
     "ingredients": [
-      { "item": "Chicken breast, sliced thin", "qty": "300 g", "aisle": "Meat & tofu" },
-      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Chicken breast, sliced thin", "buy": "Chicken breast", "qty": "300 g", "aisle": "Meat & tofu" },
+      { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Cabbage + carrot, shredded", "qty": "2 cups", "aisle": "Produce" },
       { "item": "Egg noodles, cooked", "qty": "for 2", "aisle": "Grains & carbs" },
       { "item": "Light soy + dark soy", "qty": "2 tbsp + 1 tsp", "aisle": "Sauces & oils" },
       { "item": "Sesame oil", "qty": "1–2 tsp", "aisle": "Sauces & oils" },
-      { "item": "Light olive oil (be generous)", "qty": "2–3 tbsp", "aisle": "Sauces & oils" },
+      { "item": "Light olive oil (be generous)", "buy": "Olive oil", "qty": "2–3 tbsp", "aisle": "Sauces & oils" },
       { "item": "Sugar, chicken bouillon powder, white pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
     ],
     "steps": [
@@ -217,7 +217,7 @@
     "category": "veg",
     "portions": "2 portions (eat 2 days, or freeze)",
     "ingredients": [
-      { "item": "Carb: pasta / gnocchi / tortellini", "qty": "for 2", "aisle": "Grains & carbs" },
+      { "item": "Carb: pasta / gnocchi / tortellini", "buy": "Carb (your pick)", "qty": "for 2", "aisle": "Grains & carbs" },
       { "item": "Frozen broccoli or green beans (optional)", "qty": "1 bag", "aisle": "Frozen" },
       { "item": "→ Mushroom sauce", "qty": "1 batch (double it)", "aisle": "ref" }
     ],
@@ -235,7 +235,7 @@
     "ingredients": [
       { "item": "Cannelloni tubes (or large pasta to stuff)", "qty": "1 pack", "aisle": "Grains & carbs" },
       { "item": "Ricotta", "qty": "250 g", "aisle": "Dairy & eggs" },
-      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
       { "item": "Spinach (fresh or frozen)", "qty": "200 g", "aisle": "Produce" },
       { "item": "Mozzarella (for the top)", "qty": "1 ball / handful", "aisle": "Dairy & eggs" },
@@ -298,7 +298,7 @@
     "portions": "1 jar (scale ×5 for the week)",
     "ingredients": [
       { "item": "Rolled oats", "qty": "50 g", "aisle": "Grains & carbs" },
-      { "item": "Milk or plant drink", "qty": "120 ml", "aisle": "Dairy & eggs" },
+      { "item": "Milk or plant drink", "buy": "Milk", "qty": "120 ml", "aisle": "Dairy & eggs" },
       { "item": "Cinnamon", "qty": "pinch", "aisle": "Spices & dried herbs" },
       { "item": "Honey", "qty": "1 tsp", "aisle": "Sauces & oils" }
     ],
@@ -337,7 +337,7 @@
     "portions": "1 serving",
     "ingredients": [
       { "item": "Banana or oats", "qty": "1 / 50 g", "aisle": "Produce" },
-      { "item": "Egg", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Protein powder or protein batter pancake mix", "qty": "1 scoop", "aisle": "Pantry" },
       { "item": "Milk", "qty": "splash", "aisle": "Dairy & eggs" },
       { "item": "Toppings: granola, fruit, spread", "qty": "to taste", "aisle": "Pantry" }
@@ -375,7 +375,7 @@
     "portions": "1 batch",
     "ingredients": [
       { "item": "Mushrooms, sliced", "qty": "250 g", "aisle": "Produce" },
-      { "item": "Cooking cream 10% fat", "qty": "150–200 ml", "aisle": "Dairy & eggs" },
+      { "item": "Cooking cream 10% fat", "buy": "Cooking cream", "qty": "150–200 ml", "aisle": "Dairy & eggs" },
       { "item": "Mozzarella", "qty": "handful", "aisle": "Dairy & eggs" },
       { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
       { "item": "Butter or oil", "qty": "1 tbsp", "aisle": "Sauces & oils" },
@@ -430,7 +430,7 @@
       { "item": "Greek yoghurt", "qty": "150 g", "aisle": "Dairy & eggs" },
       { "item": "Self-rising flour (or plain + baking powder + salt)", "qty": "140–160 g", "aisle": "Grains & carbs" },
       { "item": "Mozzarella, cheddar or parmesan (to top)", "qty": "to top", "aisle": "Dairy & eggs" },
-      { "item": "Olive oil; oregano or basil", "qty": "to taste", "aisle": "Sauces & oils" }
+      { "item": "Olive oil; oregano or basil", "buy": "Olive oil", "qty": "to taste", "aisle": "Sauces & oils" }
     ],
     "steps": [
       "Mix yoghurt + flour to a soft dough.",
@@ -445,8 +445,8 @@
     "category": "basic",
     "portions": "Big batch — freeze",
     "ingredients": [
-      { "item": "Chicken breast (patties and/or pieces)", "qty": "as needed", "aisle": "Meat & tofu" },
-      { "item": "Egg, beaten", "qty": "1–2", "aisle": "Dairy & eggs" },
+      { "item": "Chicken breast (patties and/or pieces)", "buy": "Chicken breast", "qty": "as needed", "aisle": "Meat & tofu" },
+      { "item": "Egg, beaten", "buy": "Eggs", "qty": "1–2", "aisle": "Dairy & eggs" },
       { "item": "Breadcrumbs / panko", "qty": "300–500 g", "aisle": "Pantry" },
       { "item": "Paprika, oregano, onion powder, salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" }
     ],
@@ -464,7 +464,7 @@
     "portions": "Small batch",
     "ingredients": [
       { "item": "Light mayo", "qty": "2 tbsp", "aisle": "Sauces & oils" },
-      { "item": "American/processed cheese slice, melted", "qty": "1", "aisle": "Dairy & eggs" },
+      { "item": "American/processed cheese slice, melted", "buy": "American cheese slices", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Smoked paprika, onion powder, black pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
       { "item": "Liquid smoke (or extra smoked paprika)", "qty": "1 drop", "aisle": "Sauces & oils" }
     ],

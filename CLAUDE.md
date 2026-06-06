@@ -11,7 +11,7 @@ Personal meal-prep app for Sara. Astro + `@vite-pwa/astro`, static output, insta
 **No garlic in any form — not even garlic powder. No fresh onion; onion only as powder, sparingly.** Avoid all other alliums (spring onion, leek, shallot, chives). Build aromatics with ginger, smoked/sweet paprika, cumin, herbs, and a little onion powder.
 
 ## Structure
-- `src/data/recipes.json` — recipes: `{ id, title, category, portions, ingredients:[{item,qty,aisle}], steps:[], tip? }` (`portions` is a free-text string)
+- `src/data/recipes.json` — recipes: `{ id, title, category, portions, ingredients:[{item,qty,aisle,buy?}], steps:[], tip? }` (`portions` is a free-text string). Optional `buy` = canonical shopping-list name used to merge variants (e.g. `item:"Chicken breast, diced"` + `buy:"Chicken breast"`); the recipe view shows `item`, the shopping list groups by `buy`. The list also auto-strips a trailing `(note)` when grouping, so `Parmesan (to finish)` merges with `Parmesan`.
 - `src/data/weeks.json` — rotation: `[{ name, subtitle, breakfast:[recipeId], days:[{d, id, tag}], prepDay:[string], duringWeek:[{d, t}] }]`. `days[].id` is a `recipeId`; `tag` ∈ `cook | fridge | freezer | takeout`. `prepDay` = one-session prep steps; `duringWeek` = quick fresh cooks (`d` = day, `t` = text).
 - `src/data/categories.json` — category label + colour
 - `src/layouts/Base.astro` — styling (Fraunces + Karla), head, SW registration
@@ -19,7 +19,9 @@ Personal meal-prep app for Sara. Astro + `@vite-pwa/astro`, static output, insta
 - `public/manifest.webmanifest`, `public/icon.svg` — PWA assets
 
 ## How it works
-- The **Shopping** list auto-derives from the current week's recipe ingredients, grouped by aisle, expanding `→ (see Basics)` cross-references into real ingredients. Checkboxes + manually-added items persist in `localStorage` per week. Each recipe has “add ingredients to shopping list”.
+- The **Shopping** list auto-derives from the current week's recipe ingredients (or the whole rotation in "master" scope), grouped by aisle, expanding `→ (see Basics)` cross-references into real ingredients. Checkboxes + manually-added items persist in `localStorage` per week. Each recipe has “add ingredients to shopping list”.
+- **Quantities are totalled** per item (`sumQty` in `index.astro`): it sums each unit it understands (g/kg, ml/l, tbsp/tsp, plain counts, `for N` portions), carries ranges through, and appends a trailing `+` when there's also an un-parseable amount ("handful", "to taste"). So the master list answers "how much to buy for everything." Spice/herb blend lines are exploded into individual jars; plain tap **water is excluded** (`isNoShop`).
+- **Ticking** an item moves it out of its aisle into a collapsed "In the basket" section at the bottom, so only to-buy items stay visible.
 - Add a recipe: append to `recipes.json`. Add it to a week in `weeks.json` by `recipeId`. Rebuild.
 
 ## Commands
