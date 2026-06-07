@@ -292,6 +292,33 @@
   },
 
   {
+    "id": "turkeychilli",
+    "title": "Turkey Chilli",
+    "category": "chicken",
+    "portions": "~3 portions — cook once, eat 1×/week",
+    "tip": "A meaty swap for the bolognese using the same 500 g pack of mince. Make it once, eat one, freeze two. Good over rice, or scooped with tortillas / a baked potato to vary it.",
+    "ingredients": [
+      { "item": "Minced turkey", "qty": "500 g", "aisle": "Meat & tofu" },
+      { "item": "Olive oil", "qty": "1 tbsp (10 ml)", "aisle": "Sauces & oils" },
+      { "item": "Tomato paste", "qty": "1 tbsp", "aisle": "Cans & jars" },
+      { "item": "Chopped tomatoes", "qty": "1 can", "aisle": "Cans & jars" },
+      { "item": "Kidney beans + black beans, drained", "qty": "1 can each", "aisle": "Cans & jars" },
+      { "item": "Corn", "qty": "1 cup", "aisle": "Cans & jars" },
+      { "item": "Stock or water", "qty": "~200 ml", "aisle": "Pantry" },
+      { "item": "Soy sauce", "qty": "splash", "aisle": "Sauces & oils" },
+      { "item": "Rice (to serve)", "qty": "for 3", "aisle": "Grains & carbs" },
+      { "item": "Optional: bell pepper + carrot, diced", "qty": "1 each", "aisle": "Produce" },
+      { "item": "Chili powder 1 tsp, smoked paprika 1 tsp, oregano 1 tsp, onion powder 1 tsp, salt ½ tsp, pepper ¼ tsp", "qty": "as listed", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Heat the olive oil on medium. Add the turkey, break it apart and brown well 5–7 min (let it actually brown — kills the 'boiled' taste).",
+      "(Optional) add the diced pepper and carrot and soften 3–4 min. Stir in all the dry spices + onion powder for 30 sec, then the tomato paste and cook 1 min until it darkens.",
+      "Add the chopped tomatoes, beans, corn and ~200 ml stock/water. Bring to a gentle simmer, then lower the heat and simmer uncovered 20–25 min until thick (top up with water if it gets dry).",
+      "Season with salt and a splash of soy. Portion over rice; eat one, freeze two."
+    ]
+  },
+
+  {
     "id": "oats_base",
     "title": "Overnight Oats — Base + Mix-ins",
     "category": "breakfast",
