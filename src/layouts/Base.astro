@@ -115,8 +115,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/"
     .saucebox .sx{font-family:'Fraunces',serif;font-weight:600;font-size:.95rem;color:var(--accent-d);margin-bottom:3px}
     /* shopping */
     .shophead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
-    .shophead h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem}
-    .copybtn{font-family:'Karla';font-weight:700;font-size:.74rem;background:var(--accent);color:#fff;border:none;padding:9px 14px;border-radius:9px;cursor:pointer}
+    .shophead h2{font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem;min-width:0;line-height:1.2}
+    .copybtn{font-family:'Karla';font-weight:700;font-size:.74rem;background:var(--accent);color:#fff;border:none;padding:9px 14px;border-radius:9px;cursor:pointer;white-space:nowrap;flex:0 0 auto}
     .copybtn:hover{background:var(--accent-d)}
     .copybtn.ok{background:#8a9b91}
     .scopebar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
@@ -124,7 +124,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/"
     .scopebar button:hover{border-color:var(--muted)}
     .scopebar button.active{background:var(--accent);border-color:var(--accent);color:#fff}
     .shopsub{font-size:.84rem;color:var(--muted);margin-bottom:14px}
-    .wk-tag{font-size:.58rem;text-transform:uppercase;letter-spacing:.03em;color:var(--takeout);font-weight:700;margin-left:7px;border:1px solid var(--takeout);padding:1px 6px;border-radius:20px}
+    .wk-tag{font-size:.58rem;text-transform:uppercase;letter-spacing:.03em;color:var(--takeout);font-weight:700;margin-left:7px;border:1px solid var(--takeout);padding:1px 6px;border-radius:20px;white-space:nowrap;display:inline-block}
     .addrow{display:flex;gap:8px;margin-bottom:12px}
     .addrow input{flex:1;font-family:'Karla';font-size:.9rem;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}
     .addrow input:focus{outline:none;border-color:var(--accent)}
@@ -150,11 +150,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // e.g. "/meal-app/"
     .shopitem .box{width:20px;height:20px;border:2px solid var(--muted);border-radius:5px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:#fff;transition:.1s}
     .shopitem.done .box{background:var(--accent);border-color:var(--accent)}
     .shopitem.done .txt{text-decoration:line-through;color:#c3bdb2}
-    .shopitem .txt{font-size:.92rem}
+    .shopitem .txt{font-size:.92rem;flex:1;min-width:0;line-height:1.3}
     .shopitem .amt{margin-left:auto;font-size:.82rem;color:var(--muted);white-space:nowrap}
     .shopitem.done .amt{color:#c3bdb2}
     .shopitem .rm{margin-left:6px;border:none;background:transparent;color:var(--chicken);font-size:1rem;cursor:pointer;flex:0 0 auto}
-    .added-tag{font-size:.58rem;text-transform:uppercase;color:var(--accent);font-weight:700;margin-left:7px}
+    .added-tag{font-size:.58rem;text-transform:uppercase;color:var(--accent);font-weight:700;margin-left:7px;white-space:nowrap;display:inline-block}
     .copyhidden{position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0}
 
     /* today glance */
