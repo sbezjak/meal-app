@@ -49,7 +49,6 @@ import categories from '../data/categories.json';
         <button data-scope="week">This week</button>
         <button data-scope="all">Whole rotation</button>
       </div>
-      <p class="shopsub" id="shopSub"></p>
       <div class="addrow">
         <input id="addInput" type="text" placeholder="Add your own item…" autocomplete="off" />
         <button id="addBtn">Add</button>
@@ -85,6 +84,18 @@ import categories from '../data/categories.json';
 
     let currentWeek = LS.get('week', 0);
     if (typeof currentWeek !== 'number' || currentWeek < 0 || currentWeek >= weeks.length) currentWeek = 0;
+
+    // One-time: checks used to live in per-scope stores (shop:checks:all, shop:checks:week:N).
+    // Merge any of those into the single shared store so existing baskets aren't lost.
+    if(!LS.get('shop:checksMerged', false)){
+      const merged = LS.get('shop:checks', {});
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && k.startsWith('shop:checks:')) Object.assign(merged, LS.get(k, {}));
+      }
+      LS.set('shop:checks', merged);
+      LS.set('shop:checksMerged', true);
+    }
 
     const isFreeDay = (d) => d.tag === 'takeout';
     const breakfastIds = (w) => Array.isArray(w.breakfast) ? w.breakfast : [w.breakfast];
@@ -401,9 +412,10 @@ import categories from '../data/categories.json';
       if(shopScope==='all') return weeks.map((_,i)=>i);
       return [currentWeek];
     }
-    const scopeKey = () => shopScope==='all' ? 'all' : shopScope+':'+currentWeek;
     const manualKey = () => 'shop:manual:' + currentWeek;
-    const checkKey = () => 'shop:checks:' + scopeKey();
+    // Checks are shared across every week and the master list, keyed by item id (aisle|name),
+    // so once you tick something off it stays ticked wherever that item shows up.
+    const checkKey = () => 'shop:checks';
     const itemId = (it) => (it.aisle+'|'+it.item).toLowerCase();
 
     function buildShop(){
@@ -432,14 +444,9 @@ import categories from '../data/categories.json';
       if(shopScope==='all') return 'Master list — whole rotation';
       return `${weeks[currentWeek].name} — Shopping`;
     }
-    function scopeSub(){
-      if(shopScope==='all') return 'Everything across all weeks, deduped and sorted by aisle — for one big stock-up trip. "×N wks" marks items several weeks need (buy more of those). Tick as you shop.';
-      return 'Auto-built from this week’s meals + breakfasts, sorted by aisle. Tick as you shop.';
-    }
     let shopBasketOpen = false; // the bottom "In the basket" section starts collapsed so only to-buy items show
     function renderShop(){
       document.getElementById('shopTitle').textContent = scopeTitle();
-      document.getElementById('shopSub').textContent = scopeSub();
       document.querySelectorAll('#scopeBar button').forEach(b => b.classList.toggle('active', b.dataset.scope===shopScope));
       const { order, groups } = buildShop();
       const checks = LS.get(checkKey(), {});
