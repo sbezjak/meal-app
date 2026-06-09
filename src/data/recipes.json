@@ -229,12 +229,12 @@
   },
   {
     "id": "cannelloni",
-    "title": "Spinach & Ricotta Cannelloni",
+    "title": "Spinach & Ricotta Bake (layered, or roll as cannelloni)",
     "category": "veg",
-    "portions": "2 dishes / ~16 rolls (2–3 portions)",
-    "tip": "Shallow dish (~18×15×3–4 cm)? Roll it up — single-layer cannelloni fits the height perfectly, lasagne layering doesn't. Small dry sheets (~8×5 cm) make ~16 rolls, ~8 per dish.",
+    "portions": "2 dishes (2–3 portions)",
+    "tip": "Fast way (no kettle, no soaking): layer dry no-boil sheets flat and let them cook in the sauce — just be generous with marinara so the edges soften. Want it fancier? Soak and roll as cannelloni instead (see last step). Either way fills 2 shallow ~18×15 cm dishes and freezes the same.",
     "ingredients": [
-      { "item": "Lasagne sheets (for rolling)", "buy": "Lasagne sheets", "qty": "~16–20 sheets", "aisle": "Grains & carbs" },
+      { "item": "Lasagne sheets (no-boil)", "buy": "Lasagne sheets", "qty": "~24 sheets (layered) / ~16–20 (rolled)", "aisle": "Grains & carbs" },
       { "item": "Ricotta", "qty": "250 g", "aisle": "Dairy & eggs" },
       { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Parmesan", "qty": "30 g", "aisle": "Dairy & eggs" },
@@ -247,12 +247,12 @@
       { "item": "→ Marinara sauce", "qty": "1 batch (~500 g passata)", "aisle": "ref" }
     ],
     "steps": [
-      "Make the marinara (recipe below) so you control the spices: stir ~500 g passata with 1 tbsp tomato paste, oregano, basil, a little onion powder, a pinch of sugar, salt and pepper. No cooking — it bakes through. One ~500 g batch covers both dishes (~150–200 ml each); keep ~50 ml back for dry ends.",
-      "Mix the filling: ricotta, egg, parmesan, shredded cheese, wilted/chopped spinach, 1/2 tsp salt and 1/2 tsp pepper.",
-      "Soften the sheets in batches of 4–6 (not all at once — they stick and tear): soak in just-boiled water, single layer, 3–5 min until bendy, pat dry. Spread ~1 heaped tbsp filling (~30 g) on each, roll up, sit seam-side down. Repeat with the next batch.",
-      "Spread a little marinara on the base of each dish, pack in ~8 rolls in a single layer, then cover generously with marinara so the sheet ends don't dry out — they should look wet, not streaked.",
-      "Scatter mozzarella over the top, bake at 180°C ~25 min until tender and bubbling. Finish with torn basil. Cool and freeze a dish (single-use dish reheats straight from the freezer).",
-      "Prefer lasagne? Skip the rolling and layer instead — but a shallow dish only fits ~2 thin layers."
+      "Make the marinara (recipe below): stir ~500 g passata with 1 tbsp tomato paste, oregano, basil, a little onion powder, a pinch of sugar, salt and pepper. No cooking — it bakes through. One batch covers both dishes; keep a little back for the tops.",
+      "Mix the filling: ricotta, egg, parmesan, shredded cheese, wilted/chopped spinach, 1/2 tsp salt and 1/2 tsp pepper. Split everything between your two dishes as you go.",
+      "Assemble each dish (no soaking): spread a thin layer of marinara on the base. Tile ~6 dry sheets flat to cover it — lay them side by side, overlapping edges slightly, and snap a sheet or two to patch corners and the last strip. Gaps are fine, they're under sauce.",
+      "Spread half this dish's filling over the sheets, then a layer of marinara. Tile another ~6 sheets on top (~12 sheets per dish), and finish with marinara over the whole surface — every edge should look wet, not dry, or the sticking-out bits won't soften.",
+      "Scatter mozzarella over the top. Bake at 180°C ~25 min (a few min longer if the sheets still feel firm) until tender and bubbling. Finish with torn basil. Cool and freeze a dish — single-use dish reheats straight from the freezer.",
+      "Cannelloni version: soak sheets in batches of 4–6 in hot water 3–5 min until bendy, pat dry, spread ~1 tbsp filling on each, roll up and sit seam-side down. Pack ~8 rolls per dish in a single layer, cover generously with marinara, then mozzarella and bake as above."
     ]
   },
   {
