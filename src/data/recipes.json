@@ -229,11 +229,11 @@
   },
   {
     "id": "cannelloni",
-    "title": "Baked Spinach & Ricotta Cannelloni",
+    "title": "Spinach & Ricotta Lasagne",
     "category": "veg",
     "portions": "2 portions",
     "ingredients": [
-      { "item": "Cannelloni tubes (or large pasta to stuff)", "qty": "1 pack", "aisle": "Grains & carbs" },
+      { "item": "Lasagne sheets", "qty": "1 pack", "aisle": "Grains & carbs" },
       { "item": "Ricotta", "qty": "250 g", "aisle": "Dairy & eggs" },
       { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
       { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
@@ -245,8 +245,8 @@
     "steps": [
       "Make the marinara (recipe below) so you control the spices.",
       "Mix the filling: ricotta, egg, parmesan, wilted/chopped spinach, salt and pepper.",
-      "Pipe or spoon the filling into the cannelloni tubes; lay in a baking dish.",
-      "Pour marinara over, scatter mozzarella, bake at 190°C ~30 min until bubbling and golden. Cool and freeze a portion (single-use dish reheats straight from the freezer)."
+      "Layer in a baking dish: a little marinara on the base, then lasagne sheets, then spread some ricotta filling, then marinara. Repeat, finishing with a layer of sheets topped with marinara.",
+      "Scatter mozzarella over the top, bake at 190°C ~35–40 min until the sheets are tender and the top is bubbling and golden. Cool and freeze a portion (single-use dish reheats straight from the freezer)."
     ]
   },
   {
@@ -445,7 +445,7 @@
     ],
     "steps": [
       "Stir everything together: passata/tomatoes, tomato paste, oregano, basil, a little onion powder, a pinch of sugar, salt and pepper.",
-      "No need to cook it — it bakes through in the cannelloni or pizza. Taste and adjust the spices."
+      "No need to cook it — it bakes through in the rolls or pizza. Taste and adjust the spices."
     ]
   },
   {
