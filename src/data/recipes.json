@@ -229,24 +229,30 @@
   },
   {
     "id": "cannelloni",
-    "title": "Spinach & Ricotta Lasagne",
+    "title": "Spinach & Ricotta Cannelloni",
     "category": "veg",
-    "portions": "2 portions",
+    "portions": "2 dishes / ~16 rolls (2–3 portions)",
+    "tip": "Shallow dish (~18×15×3–4 cm)? Roll it up — single-layer cannelloni fits the height perfectly, lasagne layering doesn't. Small dry sheets (~8×5 cm) make ~16 rolls, ~8 per dish.",
     "ingredients": [
-      { "item": "Lasagne sheets", "qty": "1 pack", "aisle": "Grains & carbs" },
+      { "item": "Lasagne sheets (for rolling)", "buy": "Lasagne sheets", "qty": "~16–20 sheets", "aisle": "Grains & carbs" },
       { "item": "Ricotta", "qty": "250 g", "aisle": "Dairy & eggs" },
       { "item": "Egg", "buy": "Eggs", "qty": "1", "aisle": "Dairy & eggs" },
-      { "item": "Parmesan", "qty": "handful", "aisle": "Dairy & eggs" },
-      { "item": "Spinach (fresh or frozen)", "qty": "200 g", "aisle": "Produce" },
+      { "item": "Parmesan", "qty": "30 g", "aisle": "Dairy & eggs" },
+      { "item": "Shredded cheese (for the filling)", "qty": "120 g", "aisle": "Dairy & eggs" },
+      { "item": "Spinach (fresh or frozen)", "qty": "250 g", "aisle": "Produce" },
       { "item": "Mozzarella (for the top)", "qty": "1 ball / handful", "aisle": "Dairy & eggs" },
-      { "item": "Salt, pepper", "qty": "to taste", "aisle": "Spices & dried herbs" },
-      { "item": "→ Marinara sauce", "qty": "1 batch", "aisle": "ref" }
+      { "item": "Basil (to finish)", "qty": "handful", "aisle": "Produce" },
+      { "item": "Salt", "qty": "1/2 tsp", "aisle": "Spices & dried herbs" },
+      { "item": "Pepper", "qty": "1/2 tsp", "aisle": "Spices & dried herbs" },
+      { "item": "→ Marinara sauce", "qty": "1 batch (+ a little extra)", "aisle": "ref" }
     ],
     "steps": [
-      "Make the marinara (recipe below) so you control the spices.",
-      "Mix the filling: ricotta, egg, parmesan, wilted/chopped spinach, salt and pepper.",
-      "Layer in a baking dish: a little marinara on the base, then lasagne sheets, then spread some ricotta filling, then marinara. Repeat, finishing with a layer of sheets topped with marinara.",
-      "Scatter mozzarella over the top, bake at 190°C ~35–40 min until the sheets are tender and the top is bubbling and golden. Cool and freeze a portion (single-use dish reheats straight from the freezer)."
+      "Make the marinara (recipe below) so you control the spices — make a little extra, you want plenty to cover the rolls.",
+      "Mix the filling: ricotta, egg, parmesan, shredded cheese, wilted/chopped spinach, 1/2 tsp salt and 1/2 tsp pepper.",
+      "Soften the sheets: soak in just-boiled water 3–5 min until bendy, pat dry. Spread ~1 heaped tbsp filling (~30 g) on each, roll up, sit seam-side down.",
+      "Spread a little marinara on the base of each dish, pack in ~8 rolls in a single layer, then cover generously with marinara so the sheet ends don't dry out.",
+      "Scatter mozzarella over the top, bake at 180°C ~25 min until tender and bubbling. Finish with torn basil. Cool and freeze a dish (single-use dish reheats straight from the freezer).",
+      "Prefer lasagne? Skip the rolling and layer instead — but a shallow dish only fits ~2 thin layers."
     ]
   },
   {
