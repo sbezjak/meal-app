@@ -337,6 +337,25 @@
     ]
   },
   {
+    "id": "chia_pudding",
+    "title": "Coconut Chia Pudding",
+    "category": "breakfast",
+    "portions": "1 jar (scale ×5 for the week)",
+    "ingredients": [
+      { "item": "Chia seeds", "qty": "2–3 tbsp", "aisle": "Pantry" },
+      { "item": "Coconut milk (see tip for lighter options)", "buy": "Coconut milk", "qty": "250 ml", "aisle": "Pantry" },
+      { "item": "Honey or maple syrup", "qty": "1 tsp", "aisle": "Sauces & oils" },
+      { "item": "Vanilla or cinnamon (optional)", "qty": "pinch", "aisle": "Spices & dried herbs" }
+    ],
+    "steps": [
+      "Stir chia + coconut milk + sweetener (+ vanilla/cinnamon) in a jar. Use 2 tbsp chia per 250 ml for a softer, very-soaked pudding; 3 tbsp for thick.",
+      "Stir again after 10–15 min so it doesn't clump at the bottom, then lid on, fridge overnight (8h+).",
+      "Top with whatever you have — fruit, frozen berries, banana, nuts, a little granola or peanut butter.",
+      "Make 3–5 jars at once; keeps 4–5 days."
+    ],
+    "tip": "Lighter than canned coconut: use carton coconut drink, or half coconut milk + half regular/plant milk, or milk + a spoon of Greek yoghurt for extra protein. Canned full-fat is fine too — just richer."
+  },
+  {
     "id": "banana_egg_muffins",
     "title": "Banana & Oat Muffins",
     "category": "breakfast",
@@ -352,7 +371,7 @@
     "steps": [
       "Heat oven to 180°C.",
       "Mash bananas, mix with eggs (and quark if using), then oats and baking powder to a thick batter (blend half the oats for a finer texture).",
-      "Fold in whatever mix-ins you have — chopped nuts, berries, dark chocolate, a little cinnamon.",
+      "Fold in whatever mix-ins you have — chopped nuts, berries, dark chocolate, a little cinnamon, or a tbsp of chia seeds.",
       "Spoon into a muffin tin, bake ~20 min until set. Cool and freeze in pairs."
     ],
     "tip": "Add 150 g quark (and a scoop of protein powder if you like) for the higher-protein 'banana-oat-quark' version."
@@ -373,7 +392,8 @@
       "Blend to a batter.",
       "Cook small pancakes in a non-stick pan.",
       "Stack and top with granola, fruit, a spread."
-    ]
+    ],
+    "tip": "Stir a tsp of chia into the batter and let it sit a couple of minutes before cooking — adds fibre and a little body."
   },
   {
     "id": "bakedpancake",
