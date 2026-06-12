@@ -19,7 +19,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: "The Kitchen — Sara's Meal Prep",
+        name: "The Kitchen - Sara's Meal Prep",
         short_name: "Sara's Kitchen",
         description: 'Cook once, eat all week. Sara’s meal-prep recipes, weekly plan and shopping list.',
         theme_color: '#2f4734',
