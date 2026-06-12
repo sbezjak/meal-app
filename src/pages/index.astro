@@ -43,6 +43,8 @@ import categories from '../data/categories.json';
       </div>
       <div class="mine-yourweek-h">Your week — Mon to Sun</div>
       <div id="mineList"></div>
+      <div class="mine-yourweek-h">Breakfast — pick 2 to rotate</div>
+      <div id="mineBreakfast"></div>
       <button class="viewshop" id="mineShop">🛒 Shopping for my week →</button>
     </section>
 
@@ -252,6 +254,7 @@ import categories from '../data/categories.json';
     }
     function renderMine(){
       renderPickResults();
+      renderBreakfast();
       const days = getWeekDays();
       const list = document.getElementById('mineList');
       list.innerHTML = days.map((id, i) => {
@@ -260,7 +263,7 @@ import categories from '../data/categories.json';
           return `<div class="day-slot free${tgt?' target':''}">
             <span class="day-label">${DAYS[i]}</span>
             <span class="day-free">${tgt?'Pick a recipe above ↑':'Free day'}</span>
-            <button class="day-add" data-fillday="${i}">＋ add</button>
+            <button class="day-add" data-fillday="${i}">＋ Add</button>
           </div>`;
         }
         const r = R[id]; const c = CAT[r.category];
@@ -280,6 +283,54 @@ import categories from '../data/categories.json';
         </div>`;
       }).join('');
     }
+    // ===== BREAKFAST =====
+    // Like the old fixed rotation: pick up to 2 breakfast recipes to rotate through the week.
+    // Stored as a list of recipe ids; feeds the "my week" shopping scope (de-duped).
+    const BREAK_MAX = 2;
+    function getMyBreakfast(){
+      const a = LS.get('myweekBreakfast', []);
+      return (Array.isArray(a) ? a : []).filter(id => R[id] && R[id].category === 'breakfast').slice(0, BREAK_MAX);
+    }
+    const setMyBreakfast = (a) => LS.set('myweekBreakfast', a.slice(0, BREAK_MAX));
+    function toggleBreakfast(id){
+      const a = getMyBreakfast();
+      const i = a.indexOf(id);
+      if(i >= 0) a.splice(i, 1);                 // already chosen → remove
+      else { a.push(id); if(a.length > BREAK_MAX) a.shift(); } // keep newest 2
+      setMyBreakfast(a);
+    }
+    function renderBreakfast(){
+      const wrap = document.getElementById('mineBreakfast');
+      if(!wrap) return;
+      const picks = getMyBreakfast();
+      const sel = new Set(picks);
+      let html = picks.map(id => {
+        const r = R[id], c = CAT[r.category];
+        return `<div class="recipe-card mine-card" data-rid="${id}">
+          <div class="head" data-toggle="card">
+            <span class="dot" style="background:${c.color}"></span>
+            <span class="title">${r.title}</span>
+            <button class="rmmine" data-rmbf="${id}" aria-label="Remove breakfast">✕</button>
+            <span class="chev">▸</span>
+          </div>
+          <div class="body">${detailHTML(r)}</div>
+        </div>`;
+      }).join('');
+      if(picks.length >= BREAK_MAX){
+        html += `<div class="mine-empty" style="padding:8px 2px">Two picked — remove one to swap.</div>`;
+      } else {
+        const opts = recipes.filter(r => r.category === 'breakfast' && !sel.has(r.id));
+        html += `<div class="pick-results">` + opts.map(r =>
+          `<button class="pick-row" data-bfadd="${r.id}">
+            <span class="dot" style="background:${CAT[r.category].color}"></span>
+            <span class="title">${r.title}</span>
+            <span class="pt">${r.portions}</span>
+            <span class="plus">＋</span>
+          </button>`).join('') + `</div>`;
+      }
+      wrap.innerHTML = html;
+    }
+
     // ===== FROM WHAT I HAVE (reverse-flow experiment) =====
     // Start from ingredients on hand → rank recipes by how much they're covered → tap to add to My Week.
     // Pantry staples (spices, oil, salt…) are ignored for matching, or they'd "match" everything.
@@ -470,7 +521,7 @@ import categories from '../data/categories.json';
         if(added) e.added = true;
       };
       if(shopScope==='mine'){
-        gatherIngredients(uniqMyWeek()).forEach(i => bump(i, 0, false));
+        gatherIngredients([...new Set([...uniqMyWeek(), ...getMyBreakfast()])]).forEach(i => bump(i, 0, false));
         LS.get('shop:manual:mine', []).forEach(i => bump(i, 0, true));
       } else {
         scopeWeeks().forEach(wi => {
@@ -572,6 +623,10 @@ import categories from '../data/categories.json';
         renderMine(); renderStock();
         return;
       }
+      const bfAddEl = t.closest('[data-bfadd]');
+      if(bfAddEl){ e.stopPropagation(); toggleBreakfast(bfAddEl.dataset.bfadd); renderBreakfast(); renderStock(); return; }
+      const bfRmEl = t.closest('[data-rmbf]');
+      if(bfRmEl){ e.stopPropagation(); toggleBreakfast(bfRmEl.dataset.rmbf); renderBreakfast(); renderStock(); return; }
       const rmHaveEl = t.closest('[data-rmhave]');
       if(rmHaveEl){ removePantry(decodeURIComponent(rmHaveEl.dataset.rmhave)); renderStock(); return; }
       if(t.closest('#addAllMakeable')){ matchRecipes(getPantry()).filter(m => m.miss.length===0).forEach(m => { if(!getMyWeek().includes(m.r.id)) toggleMyWeek(m.r.id); }); renderMine(); renderStock(); renderRecipes(); return; }
