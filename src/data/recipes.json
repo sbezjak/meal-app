@@ -333,10 +333,11 @@
       { "item": "Rolled oats", "qty": "50 g", "aisle": "Grains & carbs" },
       { "item": "Milk or plant drink", "buy": "Milk", "qty": "120 ml", "aisle": "Dairy & eggs" },
       { "item": "Cinnamon", "qty": "pinch", "aisle": "Spices & dried herbs" },
+      { "item": "Vanilla extract (optional)", "buy": "Vanilla extract", "qty": "1/4 tsp", "aisle": "Spices & dried herbs" },
       { "item": "Honey", "qty": "1 tsp", "aisle": "Sauces & oils" }
     ],
     "steps": [
-      "Base: stir oats + milk + cinnamon + honey in a jar, lid on, fridge overnight. Eat cold.",
+      "Base: stir oats + milk + cinnamon + vanilla + honey in a jar, lid on, fridge overnight. Eat cold.",
       "Then pick mix-ins from whatever you have — grated apple, mashed or sliced banana, frozen blueberries (they thaw overnight), cocoa powder, chia seeds (for a thicker pudding), peanut butter, a handful of nuts.",
       "Combos that work: apple + cinnamon · banana + cocoa · blueberry + chia · peanut butter + banana.",
       "Make 3–5 jars at once — they keep 3–4 days."
