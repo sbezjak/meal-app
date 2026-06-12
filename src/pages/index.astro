@@ -9,7 +9,7 @@ import categories from '../data/categories.json';
     <div class="inner">
       <div class="brand"><span class="bdot"></span>Sara's Kitchen</div>
       <nav>
-        <button class="tab active" data-view="week">This Week</button>
+        <button class="tab active" data-view="mine">My Week</button>
         <button class="tab" data-view="recipes">Recipes</button>
         <button class="tab" data-view="shop">Shopping</button>
       </nav>
@@ -17,21 +17,33 @@ import categories from '../data/categories.json';
   </div>
 
   <div class="wrap">
-    <section class="view active" id="view-week">
-      <div class="weekbar">
-        <button class="wbtn" id="prevWeek" aria-label="Previous week">‹</button>
-        <div class="label" id="weekLabel"></div>
-        <button class="wbtn" id="nextWeek" aria-label="Next week">›</button>
+    <section class="view active" id="view-mine">
+      <div class="mine-intro">🧑‍🍳 <b>Build your week.</b> Two ways — both fill the same shopping list. <b>Pick recipes</b> you fancy, or go <b>From what I have</b> and let it suggest what you can cook right now.</div>
+      <div class="mine-modes">
+        <button data-mmode="pick" class="active">🧺 Pick recipes</button>
+        <button data-mmode="stock">🔎 From what I have</button>
       </div>
-      <div class="todaybox" id="todayBox"></div>
-      <div class="bfast" id="bfast"></div>
-      <div class="schedtools">
-        <button class="rearrangebtn" id="rearrangeBtn">↕ Rearrange days</button>
-        <span class="rearrangehint" id="rearrangeHint"></span>
+      <div id="minePick" class="mmode-panel">
+        <input id="pickSearch" class="search" type="text" placeholder="🔎 Search a recipe to add…" autocomplete="off" />
+        <div id="pickResults" class="pick-results"></div>
       </div>
-      <div class="sched" id="sched"></div>
-      <button class="viewshop" id="viewShop">🛒 View this week's shopping list →</button>
-      <div class="prepbox" id="prepBox" style="margin-top:18px"></div>
+      <div id="mineStock" class="mmode-panel" hidden>
+        <div class="stock-note">Tell it what you’ve got — type it in, or pull everything you ticked off in Shopping — and it shows what you can cook now.</div>
+        <div class="mine-add">
+          <input id="haveInput" list="haveOpts" type="text" placeholder="Add an ingredient you have…" autocomplete="off" />
+          <button id="haveAddBtn">＋ Add</button>
+        </div>
+        <datalist id="haveOpts"></datalist>
+        <div class="stock-tools">
+          <button class="toolbtn" id="pullBasketBtn">⬇ Pull from my basket</button>
+          <button class="toolbtn" id="clearHaveBtn">Clear</button>
+        </div>
+        <div id="haveChips" class="chips"></div>
+        <div id="stockSuggest"></div>
+      </div>
+      <div class="mine-yourweek-h">Your week — Mon to Sun</div>
+      <div id="mineList"></div>
+      <button class="viewshop" id="mineShop">🛒 Shopping for my week →</button>
     </section>
 
     <section class="view" id="view-recipes">
@@ -46,7 +58,7 @@ import categories from '../data/categories.json';
         <button class="copybtn" id="copyBtn">📋 Copy list</button>
       </div>
       <div class="scopebar" id="scopeBar">
-        <button data-scope="week">This week</button>
+        <button data-scope="mine">My week</button>
         <button data-scope="all">Whole rotation</button>
       </div>
       <div class="addrow">
@@ -140,135 +152,6 @@ import categories from '../data/categories.json';
       return h;
     }
 
-    // ===== THIS WEEK =====
-    // One card per day (Mon…Sun). Day names stay fixed in place; rearranging swaps which meal sits on which day.
-    // Constraint: the free day must stay on the weekend (the last two positions = Sat / Sun).
-    let rearranging = false;
-    let selectedPos = null; // day position currently picked up in rearrange mode
-    const orderKey = () => 'order:' + currentWeek;
-
-    // order[pos] = the day-entry index whose meal is shown at position pos (the fixed Mon…Sun slot).
-    function dayOrder(w){
-      const n = w.days.length;
-      const saved = LS.get(orderKey(), null);
-      if(Array.isArray(saved) && saved.length === n && [...saved].sort((a,b)=>a-b).every((v,i)=>v===i)) return saved;
-      return w.days.map((_, i) => i);
-    }
-    function weekRows(w){
-      return dayOrder(w).map((mealIdx, pos) => ({ pos, dName: w.days[pos].d, meal: w.days[mealIdx] }));
-    }
-    const isWeekendPos = (w, pos) => pos >= w.days.length - 2;
-
-    function renderWeek(){
-      const w = weeks[currentWeek];
-      document.getElementById('weekLabel').innerHTML = `${w.name}<span>${w.subtitle}</span>`;
-      const bfs = breakfastIds(w).map(id => R[id]).filter(Boolean);
-      const bfLinks = bfs.map(r => `<div class="bf-item"><b>${r.title}</b> <span class="lk" data-goto="${r.id}">recipe →</span></div>`).join('');
-      document.getElementById('bfast').innerHTML =
-        `<span class="bf-ico">🥣</span>`
-        + `<span class="bf-txt"><span class="bf-label">Breakfast — mix through the week</span>${bfLinks}</span>`;
-      renderToday(w);
-      renderSched(w);
-      const duringWeek = (w.duringWeek||[]).map(x =>
-        `<li><span class="pday">${x.d}</span>${x.t}</li>`).join('');
-      document.getElementById('prepBox').innerHTML =
-        `<h3>Prep plan — ${w.name}</h3>`
-        + `<div class="lead">Do the prep-day session in one go; it fills the freezer. The quick cooks happen across the week, whenever suits — each covers about 2 days.</div>`
-        + `<div class="prepsec"><div class="prephd">🍲 Prep day — one session</div>`
-        + `<ol>${(w.prepDay||[]).map(s=>`<li>${s}</li>`).join('')}</ol></div>`
-        + (duringWeek ? `<div class="prepsec"><div class="prephd">🍳 During the week — quick fresh cooks</div>`
-        + `<ul class="duringweek">${duringWeek}</ul></div>` : '');
-    }
-
-    // "Today" glance — the meal sitting on today's weekday in the week you're viewing.
-    function renderToday(w){
-      const idx = (new Date().getDay() + 6) % 7; // JS Sun=0…Sat=6 → Mon=0…Sun=6
-      const rows = weekRows(w);
-      const row = rows[idx] || rows[0];
-      const r = R[row.meal.id];
-      const treat = isFreeDay(row.meal) && r;     // named weekend takeout
-      const pureFree = isFreeDay(row.meal) && !r; // plain eat-out day
-      const title = pureFree ? 'Free day — eat out, family lunch or leftovers'
-                  : (treat ? `${r.title} — or eat out` : (r ? r.title : ''));
-      document.getElementById('todayBox').innerHTML =
-        `<span class="td-ico">🍽️</span>`
-        + `<span class="td-txt"><span class="td-label">Today · ${row.dName}</span><b>${title}</b></span>`
-        + (pureFree ? '' : `<span class="lk" data-jump="${row.pos}">see →</span>`);
-    }
-
-    function renderSched(w){
-      document.getElementById('sched').innerHTML = weekRows(w).map(row => {
-        const d = row.meal; const free = isFreeDay(d);
-        const sel = selectedPos === row.pos ? ' sel' : '';
-        if(free){
-          const tr = R[d.id]; // named weekend "treat" takeout, or undefined for a plain free day
-          if(tr){
-            const right = rearranging ? '<span class="movemark">⇅</span>' : '<span class="chev">▸</span>';
-            return `<div class="mealcard${sel}" style="--cat:var(--takeout)" data-pos="${row.pos}">
-              <div class="drow" data-card-row>
-                <span class="day">${row.dName}</span>
-                <span class="dtitle">${tr.title}<span class="dsub">takeout-style — or eat out</span></span>
-                <span class="dtag" style="background:var(--takeout)">Takeout</span>
-                ${right}
-              </div>
-              ${rearranging ? '' : `<div class="ddetail">${detailHTML(tr)}</div>`}
-            </div>`;
-          }
-          return `<div class="mealcard freeday${sel}" style="--cat:var(--takeout)" data-pos="${row.pos}">
-            <div class="drow" data-card-row>
-              <span class="day">${row.dName}</span>
-              <span class="dtitle">Free day<span class="dsub">eat out · family lunch · leftovers</span></span>
-              <span class="dtag" style="background:var(--takeout)">Free</span>
-              ${rearranging ? '<span class="movemark">⇅</span>' : ''}
-            </div>
-          </div>`;
-        }
-        const r = R[d.id]; if(!r) return '';
-        const right = rearranging ? '<span class="movemark">⇅</span>' : '<span class="chev">▸</span>';
-        const c = CAT[r.category]; const tag = TAG[d.tag] || TAG.cook;
-        return `<div class="mealcard${sel}" style="--cat:${c.color}" data-pos="${row.pos}">
-          <div class="drow" data-card-row>
-            <span class="day">${row.dName}</span>
-            <span class="dtitle">${r.title}</span>
-            <span class="dtag" style="background:${tag.c}">${tag.t}</span>
-            ${right}
-          </div>
-          ${rearranging ? '' : `<div class="ddetail">${detailHTML(r)}</div>`}
-        </div>`;
-      }).join('');
-    }
-
-    // Tap-to-rearrange (touch-friendly, no dragging). Tap a day to pick it up, tap another to swap.
-    const DEFAULT_HINT = 'Tap a day, then tap another to swap.';
-    function toggleRearrange(){
-      rearranging = !rearranging; selectedPos = null;
-      const btn = document.getElementById('rearrangeBtn');
-      btn.textContent = rearranging ? '✓ Done' : '↕ Rearrange days';
-      btn.classList.toggle('active', rearranging);
-      document.getElementById('rearrangeHint').textContent = rearranging ? DEFAULT_HINT : '';
-      renderSched(weeks[currentWeek]);
-    }
-    function pickDay(pos){
-      pos = +pos;
-      if(selectedPos === null || selectedPos === pos){
-        selectedPos = selectedPos === pos ? null : pos;
-        renderSched(weeks[currentWeek]); return;
-      }
-      const w = weeks[currentWeek];
-      const order = dayOrder(w).slice();
-      [order[selectedPos], order[pos]] = [order[pos], order[selectedPos]];
-      // Guard: the free day must end up on the weekend (Sat / Sun).
-      const freePos = order.findIndex(mealIdx => isFreeDay(w.days[mealIdx]));
-      if(freePos >= 0 && !isWeekendPos(w, freePos)){
-        selectedPos = null; renderSched(w);
-        document.getElementById('rearrangeHint').textContent = '⚠ Free day has to stay on Sat or Sun.';
-        return;
-      }
-      LS.set(orderKey(), order);
-      selectedPos = null; renderSched(w);
-      document.getElementById('rearrangeHint').textContent = DEFAULT_HINT;
-    }
-
     // ===== RECIPES =====
     let activeFilter = 'all';
     let searchQ = '';
@@ -294,6 +177,7 @@ import categories from '../data/categories.json';
     }
     function renderRecipes(){
       const list = document.getElementById('recipeList');
+      const mine = new Set(getMyWeek());
       let entries = recipes.filter(r => (activeFilter==='all' || r.category===activeFilter) && matchesSearch(r));
       const showHeads = activeFilter==='all' && !searchQ;
       if(activeFilter==='all') entries = entries.slice().sort((a,b)=>CAT_ORDER.indexOf(a.category)-CAT_ORDER.indexOf(b.category));
@@ -309,9 +193,165 @@ import categories from '../data/categories.json';
             <span class="pt">${r.portions}</span>
             <span class="chev">▸</span>
           </div>
+          <div class="body"><button class="minebtn${mine.has(r.id)?' on':''}" data-addmine="${r.id}">${mine.has(r.id)?'✓ In my week':'＋ Add to my week'}</button>${detailHTML(r)}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // ===== MY WEEK (experiment) =====
+    // A hand-picked set of recipe ids, persisted like the shopping checkboxes, that drives its own
+    // shopping scope. Lives alongside the fixed rotation rather than replacing it.
+    // My Week is a Mon→Sun planner: `myweekDays` = 7 slots, each a recipeId or null (free day). A meal
+    // can sit on two days (e.g. chicken & gravy Mon+Tue); shopping de-dupes (uniqMyWeek) since one batch
+    // covers both, so adding a day never changes what you buy. Older flat `myweek` lists are migrated in.
+    const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    function getWeekDays(){
+      let a = LS.get('myweekDays', null);
+      if(!Array.isArray(a)){ const old = LS.get('myweek', []); a = Array.isArray(old) ? old.slice(0,7) : []; }
+      a = a.slice(0,7); while(a.length<7) a.push(null);
+      return a.map(id => (id && R[id]) ? id : null);
+    }
+    const setWeekDays = (a) => LS.set('myweekDays', a.slice(0,7));
+    const getMyWeek = () => getWeekDays().filter(Boolean);   // assigned recipe ids (membership tests)
+    const uniqMyWeek = () => [...new Set(getMyWeek())];        // de-duped — for shopping
+    const countInWeek = (id) => getWeekDays().filter(x => x === id).length;
+    const inWeek = (id) => getWeekDays().includes(id);
+    function addRecipeToWeek(id, target){
+      const a = getWeekDays();
+      const i = (target!=null && a[target]==null) ? target : a.indexOf(null);
+      if(i<0) return false;                                   // week full — all 7 days taken
+      a[i] = id; setWeekDays(a); return true;
+    }
+    function clearDay(i){ const a = getWeekDays(); a[i] = null; setWeekDays(a); }
+    function moveDay(i, dir){ const a = getWeekDays(); const j = i+dir; if(j<0||j>6) return; [a[i],a[j]] = [a[j],a[i]]; setWeekDays(a); }
+    function removeRecipeFromWeek(id){ setWeekDays(getWeekDays().map(x => x===id ? null : x)); } // clears every day it's on
+    function toggleMyWeek(id){ if(inWeek(id)){ removeRecipeFromWeek(id); return false; } return addRecipeToWeek(id); }
+    let fillTarget = null;   // a free day chosen via its "＋ add"; the next picked recipe fills exactly it
+    // Live recipe search for the "Pick recipes" mode — type → matching recipes (not already picked)
+    // show as tappable rows → tap to drop straight into My Week. Replaces the old grouped dropdown.
+    let pickQ = '';
+    function renderPickResults(){
+      const box = document.getElementById('pickResults');
+      if(!box) return;
+      let rs = recipes.slice();
+      if(pickQ){
+        rs = rs.filter(r => (r.title + ' ' + r.ingredients.map(i=>i.item).join(' ')).toLowerCase().includes(pickQ));
+      } else {
+        rs = rs.sort((a,b)=>CAT_ORDER.indexOf(a.category)-CAT_ORDER.indexOf(b.category));
+      }
+      if(!rs.length){ box.innerHTML = `<div class="mine-empty" style="padding:10px">No recipes match.</div>`; return; }
+      box.innerHTML = rs.slice(0, pickQ ? 50 : 8).map(r => {
+        const n = countInWeek(r.id);
+        return `<button class="pick-row" data-pickadd="${r.id}">
+          <span class="dot" style="background:${CAT[r.category].color}"></span>
+          <span class="title">${r.title}</span>
+          ${n ? `<span class="inweek">×${n} day${n>1?'s':''}</span>` : `<span class="pt">${r.portions}</span>`}
+          <span class="plus">＋</span>
+        </button>`;
+      }).join('');
+    }
+    function renderMine(){
+      renderPickResults();
+      const days = getWeekDays();
+      const list = document.getElementById('mineList');
+      list.innerHTML = days.map((id, i) => {
+        if(!id){
+          const tgt = fillTarget===i;
+          return `<div class="day-slot free${tgt?' target':''}">
+            <span class="day-label">${DAYS[i]}</span>
+            <span class="day-free">${tgt?'Pick a recipe above ↑':'Free day'}</span>
+            <button class="day-add" data-fillday="${i}">＋ add</button>
+          </div>`;
+        }
+        const r = R[id]; const c = CAT[r.category];
+        return `<div class="recipe-card mine-card day-slot" data-rid="${id}">
+          <div class="head" data-toggle="card">
+            <span class="day-label">${DAYS[i]}</span>
+            <span class="dot" style="background:${c.color}"></span>
+            <span class="title">${r.title}</span>
+            <span class="day-move">
+              <button class="dmove" data-moveday="${i}|-1"${i===0?' disabled':''} aria-label="Move earlier">▲</button>
+              <button class="dmove" data-moveday="${i}|1"${i===6?' disabled':''} aria-label="Move later">▼</button>
+            </span>
+            <button class="rmmine" data-clearday="${i}" aria-label="Clear this day">✕</button>
+            <span class="chev">▸</span>
+          </div>
           <div class="body">${detailHTML(r)}</div>
         </div>`;
       }).join('');
+    }
+    // ===== FROM WHAT I HAVE (reverse-flow experiment) =====
+    // Start from ingredients on hand → rank recipes by how much they're covered → tap to add to My Week.
+    // Pantry staples (spices, oil, salt…) are ignored for matching, or they'd "match" everything.
+    const STAPLE_RE = /\b(oil|salt|pepper|water|sugar|flour|baking powder|baking soda|cornflour|cornstarch|stock cube)\b/i;
+    const isStaple = (name, aisle) => aisle === 'Spices & dried herbs' || STAPLE_RE.test(name);
+    function recipeMainNames(r){
+      const out = new Set();
+      r.ingredients.forEach(ing => {
+        if(ing.item.startsWith('→')) return; // skip cross-refs — keep the matcher simple
+        shopNames(ing).forEach(n => { if(n && !isNoShop(n) && !isStaple(n, ing.aisle || '')) out.add(n); });
+      });
+      return [...out];
+    }
+    // Computed lazily on first use: it depends on shopping helpers (isNoShop, shopNames…) declared
+    // further down, so building it eagerly here would hit the temporal dead zone and blank the page.
+    let _allHaveNames;
+    const allHaveNames = () => (_allHaveNames ??= [...new Set(recipes.flatMap(recipeMainNames))].sort((a,b)=>a.localeCompare(b)));
+
+    const getPantry = () => { const a = LS.get('pantry', []); return Array.isArray(a) ? a : []; };
+    function addPantry(name){ name = (name||'').trim(); if(!name) return; const a = getPantry(); if(!a.some(x => x.toLowerCase()===name.toLowerCase())) a.push(name); LS.set('pantry', a); }
+    function removePantry(name){ LS.set('pantry', getPantry().filter(x => x !== name)); }
+    function pantryFromBasket(){
+      const checks = LS.get('shop:checks', {}); const a = getPantry(); const have = new Set(a.map(x => x.toLowerCase()));
+      Object.keys(checks).forEach(id => {
+        if(!checks[id]) return;
+        const name = (id.split('|')[1] || id).trim();
+        if(name && !have.has(name)){ have.add(name); a.push(name.charAt(0).toUpperCase() + name.slice(1)); }
+      });
+      LS.set('pantry', a);
+    }
+    function matchRecipes(have){
+      const haveL = have.map(h => h.toLowerCase().trim()).filter(Boolean);
+      const covered = name => { const n = name.toLowerCase(); return haveL.some(h => n.includes(h) || h.includes(n)); };
+      return recipes.map(r => {
+        const main = recipeMainNames(r);
+        if(!main.length) return null;
+        const miss = main.filter(n => !covered(n));
+        return { r, total: main.length, cov: main.length - miss.length, miss };
+      }).filter(x => x && x.cov > 0)
+        .sort((a,b) => a.miss.length - b.miss.length || b.cov - a.cov || a.r.title.localeCompare(b.r.title));
+    }
+    function renderStock(){
+      const have = getPantry();
+      document.getElementById('haveChips').innerHTML = have.length
+        ? have.map(h => `<span class="chip">${h}<button data-rmhave="${encodeURIComponent(h)}" aria-label="Remove">✕</button></span>`).join('')
+        : '<span class="mine-empty" style="padding:6px">Nothing yet — add what you’ve got, or pull from your basket.</span>';
+      const sug = document.getElementById('stockSuggest');
+      if(!have.length){ sug.innerHTML = ''; return; }
+      const matches = matchRecipes(have);
+      if(!matches.length){ sug.innerHTML = '<div class="mine-empty">Nothing matches yet — add a few more items.</div>'; return; }
+      const mine = new Set(getMyWeek());
+      const makeable = matches.filter(m => m.miss.length === 0);
+      let html = makeable.length ? `<button class="addall" id="addAllMakeable">＋ Add all ${makeable.length} I can make now</button>` : '';
+      html += matches.slice(0, 12).map(m => {
+        const inW = mine.has(m.r.id);
+        const status = m.miss.length === 0
+          ? '<span class="cov ok">✓ have it all</span>'
+          : `<span class="cov">missing ${m.miss.length}: ${m.miss.slice(0,3).join(', ')}${m.miss.length>3?'…':''}</span>`;
+        return `<div class="suggest ${m.miss.length===0?'can':''}">
+          <span class="s-title" data-goto="${m.r.id}">${m.r.title}</span>
+          ${status}
+          <button class="minebtn${inW?' on':''}" data-addmine="${m.r.id}">${inW?'✓ added':'＋ add'}</button>
+        </div>`;
+      }).join('');
+      sug.innerHTML = html;
+    }
+    function setMineMode(m){
+      if(m!=='pick' && m!=='stock') m = 'pick';
+      document.querySelectorAll('.mine-modes button').forEach(b => b.classList.toggle('active', b.dataset.mmode===m));
+      document.getElementById('minePick').hidden = m !== 'pick';
+      document.getElementById('mineStock').hidden = m !== 'stock';
+      LS.set('mineMode', m);
     }
     function gotoRecipe(id){
       activeFilter='all'; searchQ=''; document.getElementById('recipeSearch').value='';
@@ -406,13 +446,13 @@ import categories from '../data/categories.json';
       return [...map.values()].map(v => ({ item:v.item, qtys:v.qtys, aisle:v.aisle }));
     }
     // Shopping scope: stock up for one week, or the whole rotation (master list).
-    let shopScope = LS.get('shopScope', 'week');
-    if(!['week','all'].includes(shopScope)) shopScope = 'week';
+    let shopScope = LS.get('shopScope', 'mine');
+    if(!['mine','all'].includes(shopScope)) shopScope = 'mine';
     function scopeWeeks(){
       if(shopScope==='all') return weeks.map((_,i)=>i);
       return [currentWeek];
     }
-    const manualKey = () => 'shop:manual:' + currentWeek;
+    const manualKey = () => 'shop:manual:' + (shopScope==='mine' ? 'mine' : currentWeek);
     // Checks are shared across every week and the master list, keyed by item id (aisle|name),
     // so once you tick something off it stays ticked wherever that item shows up.
     const checkKey = () => 'shop:checks';
@@ -429,10 +469,15 @@ import categories from '../data/categories.json';
         e.wks.add(wi);
         if(added) e.added = true;
       };
-      scopeWeeks().forEach(wi => {
-        gatherIngredients(plannedRecipeIds(weeks[wi])).forEach(i => bump(i, wi, false));
-        LS.get('shop:manual:'+wi, []).forEach(i => bump(i, wi, true));
-      });
+      if(shopScope==='mine'){
+        gatherIngredients(uniqMyWeek()).forEach(i => bump(i, 0, false));
+        LS.get('shop:manual:mine', []).forEach(i => bump(i, 0, true));
+      } else {
+        scopeWeeks().forEach(wi => {
+          gatherIngredients(plannedRecipeIds(weeks[wi])).forEach(i => bump(i, wi, false));
+          LS.get('shop:manual:'+wi, []).forEach(i => bump(i, wi, true));
+        });
+      }
       const items = [...byId.values()].map(e => ({ item:e.item, aisle:e.aisle, qty:sumQty(e.qtys), weeks:e.wks.size, added:e.added }));
       const groups = {};
       items.forEach(i => { (groups[i.aisle] ||= []).push(i); });
@@ -442,6 +487,7 @@ import categories from '../data/categories.json';
     }
     function scopeTitle(){
       if(shopScope==='all') return 'Master list — whole rotation';
+      if(shopScope==='mine') return 'My week — Shopping';
       return `${weeks[currentWeek].name} — Shopping`;
     }
     let shopBasketOpen = false; // the bottom "In the basket" section starts collapsed so only to-buy items show
@@ -492,7 +538,7 @@ import categories from '../data/categories.json';
     }
     function toggleCheck(id){ const c=LS.get(checkKey(),{}); if(c[id]) delete c[id]; else c[id]=true; LS.set(checkKey(),c); }
     function addManual(items){ const m=LS.get(manualKey(),[]); const have=new Set(m.map(itemId)); items.forEach(i=>{ if(!have.has(itemId(i))){ m.push(i); have.add(itemId(i)); } }); LS.set(manualKey(),m); }
-    function removeManual(id){ scopeWeeks().forEach(wi => { const k='shop:manual:'+wi; LS.set(k, LS.get(k,[]).filter(i=>itemId(i)!==id)); }); const c=LS.get(checkKey(),{}); delete c[id]; LS.set(checkKey(),c); }
+    function removeManual(id){ const keys = shopScope==='mine' ? ['shop:manual:mine'] : scopeWeeks().map(wi=>'shop:manual:'+wi); keys.forEach(k => LS.set(k, LS.get(k,[]).filter(i=>itemId(i)!==id))); const c=LS.get(checkKey(),{}); delete c[id]; LS.set(checkKey(),c); }
 
     function copyText(text, btn, label){
       const done = () => { btn.textContent='✓ Copied'; btn.classList.add('ok'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('ok'); }, 1600); };
@@ -508,23 +554,31 @@ import categories from '../data/categories.json';
 
     document.addEventListener('click', (e) => {
       const t = e.target;
-      const cardRow = t.closest('[data-card-row]');
-      if(cardRow){
-        const card = cardRow.closest('.mealcard');
-        if(rearranging){ pickDay(card.dataset.pos); return; }
-        if(!card.classList.contains('freeday')) card.classList.toggle('open');
+      const moveEl = t.closest('[data-moveday]');
+      if(moveEl){ e.stopPropagation(); const [i,dir] = moveEl.dataset.moveday.split('|').map(Number); moveDay(i, dir); renderMine(); renderStock(); return; }
+      const fillEl = t.closest('[data-fillday]');
+      if(fillEl){ e.stopPropagation(); fillTarget = Number(fillEl.dataset.fillday); setMineMode('pick'); renderMine(); const ps=document.getElementById('pickSearch'); if(ps){ ps.scrollIntoView({block:'nearest'}); ps.focus(); } return; }
+      const pickAddEl = t.closest('[data-pickadd]');
+      if(pickAddEl){ e.stopPropagation(); addRecipeToWeek(pickAddEl.dataset.pickadd, fillTarget); fillTarget = null; renderMine(); renderRecipes(); renderStock(); return; }
+      const clearEl = t.closest('[data-clearday]');
+      if(clearEl){ e.stopPropagation(); clearDay(Number(clearEl.dataset.clearday)); renderMine(); renderRecipes(); renderStock(); return; }
+      const addMineEl = t.closest('[data-addmine]');
+      if(addMineEl){
+        e.stopPropagation();
+        const inRecipes = !!addMineEl.closest('#recipeList');
+        const on = toggleMyWeek(addMineEl.dataset.addmine);
+        if(inRecipes){ addMineEl.classList.toggle('on', on); addMineEl.textContent = on ? '✓ In my week' : '＋ Add to my week'; }
+        else renderRecipes();
+        renderMine(); renderStock();
         return;
       }
+      const rmHaveEl = t.closest('[data-rmhave]');
+      if(rmHaveEl){ removePantry(decodeURIComponent(rmHaveEl.dataset.rmhave)); renderStock(); return; }
+      if(t.closest('#addAllMakeable')){ matchRecipes(getPantry()).filter(m => m.miss.length===0).forEach(m => { if(!getMyWeek().includes(m.r.id)) toggleMyWeek(m.r.id); }); renderMine(); renderStock(); renderRecipes(); return; }
       const cardH = t.closest('[data-toggle="card"]');
       if(cardH){ cardH.closest('.recipe-card').classList.toggle('open'); return; }
       const gotoEl = t.closest('[data-goto]');
       if(gotoEl){ e.stopPropagation(); gotoRecipe(gotoEl.dataset.goto); return; }
-      const jumpEl = t.closest('[data-jump]');
-      if(jumpEl){
-        const card = document.querySelector(`.mealcard[data-pos="${jumpEl.dataset.jump}"]`);
-        if(card){ if(!rearranging && !card.classList.contains('freeday')) card.classList.add('open'); card.scrollIntoView({behavior:'smooth', block:'center'}); }
-        return;
-      }
       const rmEl = t.closest('[data-rm]');
       if(rmEl){ e.stopPropagation(); removeManual(rmEl.dataset.rm); renderShop(); return; }
       const basketH = t.closest('#shopContent [data-basket]');
@@ -535,21 +589,76 @@ import categories from '../data/categories.json';
       if(tab){ switchTab(tab.dataset.view); return; }
     });
 
-    document.getElementById('prevWeek').onclick = () => { selectedPos=null; currentWeek=(currentWeek+weeks.length-1)%weeks.length; LS.set('week',currentWeek); renderWeek(); renderShop(); };
-    document.getElementById('nextWeek').onclick = () => { selectedPos=null; currentWeek=(currentWeek+1)%weeks.length; LS.set('week',currentWeek); renderWeek(); renderShop(); };
     document.getElementById('addBtn').onclick = () => { const inp=document.getElementById('addInput'); const v=inp.value.trim(); if(!v) return; addManual([{item:v,qty:'',aisle:'Other'}]); inp.value=''; renderShop(); };
     document.getElementById('addInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('addBtn').click(); });
     document.getElementById('uncheckBtn').onclick = () => { LS.set(checkKey(), {}); renderShop(); };
     document.getElementById('clearAddedBtn').onclick = () => { LS.set(manualKey(), []); renderShop(); };
     document.getElementById('recipeSearch').addEventListener('input', (e) => { searchQ = e.target.value.trim().toLowerCase(); renderRecipes(); });
     document.getElementById('copyBtn').onclick = () => copyText(shopText(), document.getElementById('copyBtn'), '📋 Copy list');
-    document.getElementById('viewShop').onclick = () => switchTab('shop');
-    document.getElementById('rearrangeBtn').onclick = toggleRearrange;
     document.querySelectorAll('#scopeBar button').forEach(b => { b.onclick = () => { shopScope = b.dataset.scope; LS.set('shopScope', shopScope); renderShop(); }; });
+    document.getElementById('pickSearch').addEventListener('input', (e) => { pickQ = e.target.value.trim().toLowerCase(); renderPickResults(); });
+    document.getElementById('mineShop').onclick = () => { shopScope='mine'; LS.set('shopScope', shopScope); renderShop(); switchTab('shop'); };
+    document.querySelectorAll('.mine-modes button').forEach(b => { b.onclick = () => setMineMode(b.dataset.mmode); });
+    const haveAdd = () => { const inp=document.getElementById('haveInput'); addPantry(inp.value); inp.value=''; renderStock(); };
+    document.getElementById('haveAddBtn').onclick = haveAdd;
+    document.getElementById('haveInput').addEventListener('keydown', e => { if(e.key==='Enter') haveAdd(); });
+    document.getElementById('pullBasketBtn').onclick = () => { pantryFromBasket(); renderStock(); };
+    document.getElementById('clearHaveBtn').onclick = () => { LS.set('pantry', []); renderStock(); };
+    document.getElementById('haveOpts').innerHTML = allHaveNames().map(n => `<option value="${n}"></option>`).join('');
 
-    renderWeek();
+    setMineMode(LS.get('mineMode', 'pick'));
+    renderMine();
+    renderStock();
     renderFilters();
     renderRecipes();
     renderShop();
   </script>
+
+  <style is:global>
+    .mine-intro{ background:var(--card); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; padding:12px 14px; margin-bottom:14px; font-size:.92rem; line-height:1.45; color:var(--muted); }
+    .mine-modes{ display:flex; gap:8px; margin-bottom:14px; }
+    .mine-modes button{ flex:1; padding:9px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--muted); font:inherit; font-weight:600; cursor:pointer; }
+    .mine-modes button.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+    .stock-note{ font-size:.88rem; color:var(--muted); line-height:1.45; margin-bottom:12px; }
+    .stock-tools{ display:flex; gap:8px; margin:10px 0; }
+    .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+    .chip{ display:inline-flex; align-items:center; gap:6px; padding:5px 6px 5px 11px; background:var(--card); border:1px solid var(--line); border-radius:999px; font-size:.85rem; }
+    .chip button{ border:none; background:transparent; color:var(--muted); font-size:.8rem; line-height:1; padding:0 2px; cursor:pointer; }
+    .chip button:hover{ color:var(--takeout); }
+    .suggest{ display:flex; align-items:center; gap:10px; padding:11px 12px; margin-bottom:8px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
+    .suggest.can{ border-color:var(--vegan); }
+    .s-title{ flex:1; font-weight:600; cursor:pointer; }
+    .cov{ font-size:.78rem; color:var(--muted); white-space:nowrap; }
+    .cov.ok{ color:var(--vegan); font-weight:600; }
+    .suggest .minebtn{ margin:0; }
+    .addall{ width:100%; padding:11px; margin-bottom:12px; border:none; border-radius:10px; background:var(--vegan); color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+    .mine-yourweek-h{ font-weight:700; font-size:1.05rem; margin:22px 0 10px; }
+    .mine-add{ display:flex; gap:8px; margin-bottom:16px; }
+    .mine-add select, .mine-add input{ flex:1; min-width:0; padding:10px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:inherit; font:inherit; }
+    .mine-add button{ padding:10px 16px; border:none; border-radius:10px; background:var(--accent); color:#fff; font:inherit; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .pick-results{ margin-bottom:16px; }
+    .pick-row{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:11px 12px; margin-bottom:8px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:inherit; font:inherit; cursor:pointer; }
+    .pick-row:hover{ border-color:var(--accent); }
+    .pick-row .dot{ width:10px; height:10px; border-radius:50%; flex:none; }
+    .pick-row .title{ flex:1; font-weight:600; }
+    .pick-row .pt{ font-size:.78rem; color:var(--muted); white-space:nowrap; }
+    .pick-row .plus{ font-size:1.1rem; font-weight:700; color:var(--accent); flex:none; }
+    .pick-row .inweek{ font-size:.78rem; color:var(--accent); font-weight:600; white-space:nowrap; }
+    .day-slot .day-label{ font-size:.7rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; width:30px; flex:none; }
+    .day-slot.free{ display:flex; align-items:center; gap:11px; padding:12px 15px; margin-bottom:9px; border:1px dashed var(--line); border-radius:13px; }
+    .day-slot.free.target{ border-color:var(--accent); background:#faf8f4; }
+    .day-free{ flex:1; font-style:italic; font-size:.92rem; color:var(--muted); }
+    .day-slot.free.target .day-free{ color:var(--accent); font-style:normal; font-weight:600; }
+    .day-add{ flex:none; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--accent); font:inherit; font-size:.82rem; font-weight:600; padding:6px 12px; cursor:pointer; }
+    .day-add:hover{ border-color:var(--accent); }
+    .day-move{ display:inline-flex; flex-direction:column; gap:2px; flex:none; }
+    .day-move .dmove{ width:25px; height:17px; padding:0; border:1px solid var(--line); border-radius:5px; background:var(--card); color:var(--accent); font-size:.6rem; line-height:1; cursor:pointer; }
+    .day-move .dmove:disabled{ opacity:.3; cursor:default; }
+    .day-move .dmove:hover:not(:disabled){ border-color:var(--accent); }
+    .mine-empty{ padding:28px 8px; text-align:center; color:var(--muted); }
+    .rmmine{ border:none; background:transparent; color:var(--muted); font-size:1rem; line-height:1; padding:2px 6px; cursor:pointer; }
+    .rmmine:hover{ color:var(--takeout); }
+    .minebtn{ display:inline-block; margin:0 0 12px; padding:7px 12px; border:1px solid var(--accent); border-radius:8px; background:transparent; color:var(--accent); font:inherit; font-size:.85rem; font-weight:600; cursor:pointer; }
+    .minebtn.on{ background:var(--accent); color:#fff; }
+  </style>
 </Base>
