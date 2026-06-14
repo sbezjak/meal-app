@@ -373,16 +373,17 @@
       { "item": "Eggs", "qty": "2", "aisle": "Dairy & eggs" },
       { "item": "Rolled oats", "qty": "200 g", "aisle": "Grains & carbs" },
       { "item": "Quark (optional — higher-protein, moister)", "qty": "150 g", "aisle": "Dairy & eggs" },
+      { "item": "Milk (if not using quark — keeps them moist)", "qty": "100–150 ml", "aisle": "Dairy & eggs" },
       { "item": "Baking powder", "qty": "1 tsp", "aisle": "Pantry" },
       { "item": "Mix-ins: nuts, fruit, dark chocolate, cinnamon", "qty": "to taste", "aisle": "Pantry" }
     ],
     "steps": [
       "Heat oven to 180°C.",
-      "Mash bananas, mix with eggs (and quark if using), then oats and baking powder to a thick batter (blend half the oats for a finer texture).",
+      "Mash bananas, mix with eggs (and quark if using, or 100–150 ml milk if not), then oats and baking powder to a thick batter (blend half the oats for a finer texture).",
       "Fold in whatever mix-ins you have — chopped nuts, berries, dark chocolate, a little cinnamon, or a tbsp of chia seeds.",
-      "Spoon into a muffin tin, bake ~20 min until set. Cool and freeze in pairs."
+      "Let the batter sit ~10 min so the oats soak (gives a softer, overnight-oats bite), then spoon into a muffin tin and bake ~20 min until just set — don't overbake or they dry out. Cool and freeze in pairs."
     ],
-    "tip": "Add 150 g quark (and a scoop of protein powder if you like) for the higher-protein 'banana-oat-quark' version."
+    "tip": "No quark? Add 100–150 ml milk instead so they stay moist (extra banana or a spoon of peanut butter also work). For the higher-protein 'banana-oat-quark' version, use 150 g quark and a scoop of protein powder."
   },
   {
     "id": "protpancakes",
