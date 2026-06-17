@@ -60,6 +60,11 @@ import categories from '../data/categories.json';
         <h2 id="shopTitle"></h2>
         <button class="copybtn" id="copyBtn">📋 Copy list</button>
       </div>
+      <div class="notepad">
+        <div class="notepad-h">📝 Stock up next time</div>
+        <textarea id="stockNote" rows="2" autocomplete="off" placeholder="Jot what you're low on — passata, mozzarella shredded…"></textarea>
+        <div class="notepad-foot"><span>Saved as you type · separate from the list below</span><button class="notepad-clear" id="clearNoteBtn">Clear</button></div>
+      </div>
       <div class="scopebar" id="scopeBar">
         <button data-scope="mine">My week</button>
         <button data-scope="all">Whole rotation</button>
@@ -679,6 +684,14 @@ import categories from '../data/categories.json';
     document.getElementById('pullBasketBtn').onclick = () => { pantryFromBasket(); renderStock(); };
     document.getElementById('clearHaveBtn').onclick = () => { LS.set('pantry', []); renderStock(); };
     document.getElementById('haveOpts').innerHTML = allHaveNames().map(n => `<option value="${n}"></option>`).join('');
+
+    // Stock-up notepad: a free-text scratchpad, global (not per-week), auto-saved as she types.
+    const stockNote = document.getElementById('stockNote');
+    const fitNote = () => { stockNote.style.height='auto'; stockNote.style.height=stockNote.scrollHeight+'px'; };
+    stockNote.value = LS.get('shop:notepad', '');
+    fitNote();
+    stockNote.addEventListener('input', () => { LS.set('shop:notepad', stockNote.value); fitNote(); });
+    document.getElementById('clearNoteBtn').onclick = () => { stockNote.value=''; LS.set('shop:notepad',''); fitNote(); stockNote.focus(); };
 
     setMineMode(LS.get('mineMode', 'pick'));
     renderMine();

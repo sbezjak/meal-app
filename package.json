@@ -9,9 +9,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.18.2"
+    "astro": "^6.4.8"
   },
   "devDependencies": {
     "@vite-pwa/astro": "^1.2.0"
+  },
+  "overrides": {
+    "vite": "^7"
   }
 }
