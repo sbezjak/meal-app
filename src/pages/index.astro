@@ -260,7 +260,7 @@ import categories from '../data/categories.json';
         rs = rs.sort((a,b)=>CAT_ORDER.indexOf(a.category)-CAT_ORDER.indexOf(b.category));
       }
       if(!rs.length){ box.innerHTML = `<div class="mine-empty" style="padding:10px">No recipes match.</div>`; return; }
-      box.innerHTML = rs.slice(0, (pickQ || pickFilter !== 'all') ? 50 : 8).map(r => {
+      box.innerHTML = rs.slice(0, 50).map(r => {
         const n = countInWeek(r.id);
         return `<button class="pick-row" data-pickadd="${r.id}">
           <span class="dot" style="background:${CAT[r.category].color}"></span>
