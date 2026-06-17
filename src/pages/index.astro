@@ -25,6 +25,7 @@ import categories from '../data/categories.json';
       </div>
       <div id="minePick" class="mmode-panel">
         <input id="pickSearch" class="search" type="text" placeholder="🔎 Search a recipe to add…" autocomplete="off" />
+        <div class="filters" id="pickFilters"></div>
         <div id="pickResults" class="pick-results"></div>
       </div>
       <div id="mineStock" class="mmode-panel" hidden>
@@ -232,17 +233,34 @@ import categories from '../data/categories.json';
     // Live recipe search for the "Pick recipes" mode — type → matching recipes (not already picked)
     // show as tappable rows → tap to drop straight into My Week. Replaces the old grouped dropdown.
     let pickQ = '';
+    let pickFilter = 'all';
+    function renderPickFilters(){
+      const f = document.getElementById('pickFilters');
+      if(!f) return;
+      const sty = k => { const on = (k==='all' ? 'all' : k) === pickFilter; const col = k==='all' ? 'var(--accent)' : CAT[k].color; return on ? `style="background:${col};border-color:${col};color:#fff"` : ''; };
+      let html = `<button data-pf="all" ${sty('all')}>All</button>`;
+      for(const k in CAT) html += `<button data-pf="${k}" ${sty(k)}>${CAT[k].label}</button>`;
+      f.innerHTML = html;
+      f.querySelectorAll('button').forEach(b => {
+        b.onclick = () => {
+          pickFilter = b.dataset.pf;
+          renderPickFilters();
+          renderPickResults();
+        };
+      });
+    }
     function renderPickResults(){
       const box = document.getElementById('pickResults');
       if(!box) return;
       let rs = recipes.slice();
+      if(pickFilter !== 'all') rs = rs.filter(r => r.category === pickFilter);
       if(pickQ){
         rs = rs.filter(r => (r.title + ' ' + r.ingredients.map(i=>i.item).join(' ')).toLowerCase().includes(pickQ));
       } else {
         rs = rs.sort((a,b)=>CAT_ORDER.indexOf(a.category)-CAT_ORDER.indexOf(b.category));
       }
       if(!rs.length){ box.innerHTML = `<div class="mine-empty" style="padding:10px">No recipes match.</div>`; return; }
-      box.innerHTML = rs.slice(0, pickQ ? 50 : 8).map(r => {
+      box.innerHTML = rs.slice(0, (pickQ || pickFilter !== 'all') ? 50 : 8).map(r => {
         const n = countInWeek(r.id);
         return `<button class="pick-row" data-pickadd="${r.id}">
           <span class="dot" style="background:${CAT[r.category].color}"></span>
@@ -253,6 +271,7 @@ import categories from '../data/categories.json';
       }).join('');
     }
     function renderMine(){
+      renderPickFilters();
       renderPickResults();
       renderBreakfast();
       const days = getWeekDays();
