@@ -24,7 +24,9 @@ jobs:
       - name: Build with Astro
         uses: withastro/action@v3
         # withastro/action installs deps, runs `astro build`, and uploads dist/.
-        # It auto-detects npm. No extra config needed.
+        # It auto-detects npm. Astro 6 needs Node >=22.12.
+        with:
+          node-version: 22
 
   deploy:
     needs: build
